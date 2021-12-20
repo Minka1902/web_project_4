@@ -1,5 +1,19 @@
 .profile__info {
     font-family: Inter, Arial, sans-serif;
     display: flex;
-    margin: 0 165px 0 0;
+    flex-direction: column;
+    margin: 22px 165px 0 0;
+}
+
+@media screen and (min-width: 581px) and (max-width: 879.5px) {
+    .profile__info {
+        margin: 0 20px 0 0;
+        width: min-content;
+    }
+}
+
+@media screen and (max-width: 580.5px) {
+    .profile__info {
+        margin: 26.25px auto 36px;
+    }
 }

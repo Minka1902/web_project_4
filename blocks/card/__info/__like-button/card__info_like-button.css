@@ -1,0 +1,9 @@
+.card__info_like-button {
+    width: 21px;
+    height: 19px;
+}
+
+.card__info_like-button:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}

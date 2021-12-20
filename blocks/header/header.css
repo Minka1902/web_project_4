@@ -3,3 +3,10 @@
     margin: 45px auto 36.25px;
     border-bottom: solid 1px #545454;
 }
+
+@media screen and (max-width:879.5px) {
+    .header {
+        width: 100%;
+        margin: 45px 0 36.25px;
+    }
+}
