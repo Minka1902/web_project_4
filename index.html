@@ -14,14 +14,24 @@
             <img class="header__logo" src="./images/header_logo.png" alt="Around the U.S.">
         </header>
 
+        <div class="page__overla">
+            <img class="popup__close-button" src="./images/ex.png" alt="ex">
+            <div class="popup">
+                <h2 class="popup__title">Edit profile</h2>
+                <input class="popup__name" type="text" id="popupname" onfocus="this.value='';" placeholder="Jacques Cousteau">
+                <input class="popup__about-me" type="text" id="popupaboutme" onfocus="this.value='';" placeholder="Explorer">
+                <button class="popup__button">save</button>
+            </div>
+        </div>
+
         <div class="profile">
             <img class="profile__avatar" src="./images/profile_image.jpg" alt="image of an old man in a red hat">
             <div class="profile__info">
                 <div class="profile__container">
-                    <h2 class="profile__info_title">Jacques Cousteau</h2>
+                    <h2 id="username" class="profile__info_title">Jacques Cousteau</h2>
                     <img class="profile__edit-button" src="./images/edit_button.png" alt="Edit button">
                 </div>
-                <p class="profile__info_subtitle">Explorer</p>
+                <p id="aboutme" class="profile__info_subtitle">Explorer</p>
             </div>
             <button class="profile__add-button">+</button>
         </div>
@@ -31,7 +41,7 @@
                 <img class="card__image" src="./images/cards_image1.png" alt="image of a river in the woods">
                 <div class="card__info">
                     <p class="card__info_text">Yosemite Valley</p>
-                    <img class="card__info_like-button" src="./images/like.png" alt="like button">
+                    <img class="card__info_like-button" id="likeButton1" src="./images/like.png" alt="like button">
                 </div>
             </div>
 
@@ -39,7 +49,7 @@
                 <img class="card__image" src="./images/cards_image2.png" alt="">
                 <div class="card__info">
                     <p class="card__info_text">Lake Louise</p>
-                    <img class="card__info_like-button" src="./images/like.png" alt="like button">
+                    <img class="card__info_like-button" id="likeButton2" src="./images/like.png" alt="like button">
                 </div>
             </div>
 
@@ -47,7 +57,7 @@
                 <img class="card__image" src="./images/cards_image3.png" alt="">
                 <div class="card__info">
                     <p class="card__info_text">Bald Mountains</p>
-                    <img class="card__info_like-button" src="./images/like.png" alt="like button">
+                    <img class="card__info_like-button" id="likeButton3" src="./images/like.png" alt="like button">
                 </div>
             </div>
 
@@ -55,7 +65,7 @@
                 <img class="card__image" src="./images/cards_image4.png" alt="">
                 <div class="card__info">
                     <p class="card__info_text">Bald Mountains</p>
-                    <img class="card__info_like-button" src="./images/like.png" alt="like button">
+                    <img class="card__info_like-button" id="likeButton4" src="./images/like.png" alt="like button">
                 </div>
             </div>
 
@@ -63,7 +73,7 @@
                 <img class="card__image" src="./images/cards_image5.png" alt="">
                 <div class="card__info">
                     <p class="card__info_text">Vanoise Nationa...</p>
-                    <img class="card__info_like-button" src="./images/like.png" alt="like button">
+                    <img class="card__info_like-button" id="likeButton5" src="./images/like.png" alt="like button">
                 </div>
             </div>
 
@@ -71,7 +81,7 @@
                 <img class="card__image" src="./images/cards_image6.png" alt="">
                 <div class="card__info">
                     <p class="card__info_text">Lago di Braies</p>
-                    <img class="card__info_like-button" src="./images/like.png" alt="like button">
+                    <img class="card__info_like-button" id="likeButton6" src="./images/like.png" alt="like button">
                 </div>
             </div>
         </div>
@@ -81,7 +91,7 @@
         </footer>
     </div>
 
-
+    <script src="./pages/index.js"></script>
 </body>
 
 </html>
