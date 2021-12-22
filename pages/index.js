@@ -7,15 +7,18 @@ let profileName = document.getElementById("username");
 let profileAboutMe = document.getElementById("aboutme");
 let popupName = document.getElementById("popupname");
 let popupAboutMe = document.getElementById("popupaboutme");
+let popupOverlay = document.getElementById("overlay");
 
 function openPopupWindow() {
     popup.classList.add("popup__display")
     closeButton.classList.add("popup__display")
+    popupOverlay.classList.add("popup__overlay")
 }
 
 function closePopupWindow() {
     popup.classList.remove("popup__display")
     closeButton.classList.remove("popup__display")
+    popupOverlay.classList.remove("popup__overlay")
 }
 
 // function likeClicked(i) {
@@ -29,7 +32,7 @@ function savePopupWindow() {
     if (!(nameTxt === "")) {
         profileName.textContent = nameTxt;
         popupName.setAttribute("placeholder", nameTxt);
-        popupAboutMe.setAttribute("text", "");
+        popupName.setAttribute("text", "");
     }
 
     let aboutMeTxt = popupAboutMe.value;
