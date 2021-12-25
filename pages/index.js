@@ -1,4 +1,3 @@
-var likeButtons = document.querySelectorAll(".card__info_like-button");
 let editButton = document.querySelector(".profile__edit-button");
 let popup = document.querySelector(".popup");
 let closeButton = document.querySelector(".popup__close-button");
@@ -10,22 +9,14 @@ let popupAboutMe = document.getElementById("popupaboutme");
 let popupOverlay = document.getElementById("overlay");
 
 function openPopupWindow() {
-    popup.classList.add("popup__display")
-    closeButton.classList.add("popup__display")
+    popup.classList.add("popup__displayed")
     popupOverlay.classList.add("popup__overlay")
 }
 
 function closePopupWindow() {
-    popup.classList.remove("popup__display")
-    closeButton.classList.remove("popup__display")
+    popup.classList.remove("popup__displayed")
     popupOverlay.classList.remove("popup__overlay")
 }
-
-// function likeClicked(i) {
-//     if (likeButtons[i].getAttribute("src") == "./images/like.png") {
-//         likeButtons[i].setAttribute("src", "./images/like_checked.png");
-//     } else { likeButtons[i].setAttribute("src", "./images/like.png"); }
-// }
 
 function savePopupWindow() {
     let nameTxt = popupName.value;
@@ -51,7 +42,3 @@ editButton.addEventListener("click", openPopupWindow);
 closeButton.addEventListener("click", closePopupWindow);
 
 saveButton.addEventListener("click", savePopupWindow);
-
-// for (var i = 0; i < likeButtons.length; i++) {
-//     likeButtons[i].addEventListener("click", likeClicked(i));
-// }

@@ -2,12 +2,23 @@
     width: 40px;
     height: 40px;
     position: fixed;
+    align-items: center;
+    background-color: transparent;
+    border: none;
     top: calc(50% - 200px);
     left: calc(50% + 215px);
-    display: none;
 }
 
 .popup__close-button:hover {
     opacity: 0.6;
     cursor: pointer;
+}
+
+@media screen and (max-width: 500px) {
+    .popup__close-button {
+        width: 26px;
+        height: 26px;
+        top: calc(50% - 190px);
+        left: calc(50% + 105px);
+    }
 }

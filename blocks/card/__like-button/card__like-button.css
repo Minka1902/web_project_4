@@ -1,9 +1,13 @@
-.card__info_like-button {
+.card__like-button {
     width: 21px;
     height: 19px;
+    border: none;
+    background-color: transparent;
+    background-image: url("../../../images/like.png");
+    background-repeat: no-repeat;
 }
 
-.card__info_like-button:hover {
+.card__like-button:hover {
     opacity: 0.5;
     cursor: pointer;
 }
