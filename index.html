@@ -16,22 +16,25 @@
 
         <main>
             <div class="popup">
-                <div class="popup__overlay" id="overlay"></div>
-                <button class="popup__close-button" type="button"><img src="./images/close_icon.svg" alt="ex"></button>
-                <h2 class="popup__title">Edit profile</h2>
-                <input class="popup__input" type="text" name="popupname" id="popupname" onfocus="this.value='';" placeholder="Jacques Cousteau">
-                <input class="popup__input" type="text" name="popupaboutme" id="popupaboutme" onfocus="this.value='';" placeholder="Explorer">
-                <button class="popup__button" type="submit">save</button>
+                <div class="popup__content">
+                    <button class="popup__close-button" type="button"><img src="./images/close_icon.svg" alt="ex"></button>
+                    <h2 class="popup__title">Edit profile</h2>
+                    <form class="popup__form">
+                        <input class="popup__input" type="text" name="name" id="popupname" onfocus="this.value='';" placeholder="Jacques Cousteau">
+                        <input class="popup__input" type="text" name="description" id="popupaboutme" onfocus="this.value='';" placeholder="Explorer">
+                        <button class="popup__button" type="submit">save</button>
+                    </form>
+                </div>
             </div>
 
             <section class="profile">
                 <img class="profile__avatar" src="./images/profile_image.jpg" alt="image of an old man in a red hat">
                 <div class="profile__info">
                     <div class="profile__container">
-                        <h1 id="username" class="profile__name">Jacques Cousteau</h1>
+                        <h1 id="profilename" class="profile__name text-hiding">Jacques Cousteau</h1>
                         <button type="button" class="profile__edit-button"></button>
                     </div>
-                    <p id="aboutme" class="profile__about-me">Explorer</p>
+                    <p id="profiledescription" class="profile__about-me text-hiding">Explorer</p>
                 </div>
                 <button class="profile__add-button">+</button>
             </section>
@@ -40,7 +43,7 @@
                 <div class="card">
                     <img class="card__image" src="./images/cards_image1.png" alt="Yosemite Valley">
                     <div class="card__info">
-                        <h2 class="card__text">Yosemite Valley</h2>
+                        <h2 class="card__text text-hiding">Yosemite Valley</h2>
                         <button type="button" id="likeButton1" class="card__like-button"></button>
                     </div>
                 </div>
@@ -48,7 +51,7 @@
                 <div class="card">
                     <img class="card__image" src="./images/cards_image2.png" alt="Lake Louise">
                     <div class="card__info">
-                        <h2 class="card__text">Lake Louise</h2>
+                        <h2 class="card__text text-hiding">Lake Louise</h2>
                         <button type="button" id="likeButton2" class="card__like-button"></button>
                     </div>
                 </div>
@@ -56,7 +59,7 @@
                 <div class="card">
                     <img class="card__image" src="./images/cards_image3.png" alt="Bald Mountains">
                     <div class="card__info">
-                        <h2 class="card__text">Bald Mountains</h2>
+                        <h2 class="card__text text-hiding">Bald Mountains</h2>
                         <button type="button" id="likeButton3" class="card__like-button"></button>
                     </div>
                 </div>
@@ -64,7 +67,7 @@
                 <div class="card">
                     <img class="card__image" src="./images/cards_image4.png" alt="Bald Mountains">
                     <div class="card__info">
-                        <h2 class="card__text">Bald Mountains</h2>
+                        <h2 class="card__text text-hiding">Bald Mountains</h2>
                         <button type="button" id="likeButton4" class="card__like-button"></button>
                     </div>
                 </div>
@@ -72,7 +75,7 @@
                 <div class="card">
                     <img class="card__image" src="./images/cards_image5.png" alt="Vanoise National Park">
                     <div class="card__info">
-                        <h2 class="card__text">Vanoise Nationa...</h2>
+                        <h2 class="card__text text-hiding">Vanoise Nationa...</h2>
                         <button type="button" id="likeButton5" class="card__like-button"></button>
                     </div>
                 </div>
@@ -80,7 +83,7 @@
                 <div class="card">
                     <img class="card__image" src="./images/cards_image6.png" alt="Lago di Braies">
                     <div class="card__info">
-                        <h2 class="card__text">Lago di Braies</h2>
+                        <h2 class="card__text text-hiding">Lago di Braies</h2>
                         <button type="button" id="likeButton6" class="card__like-button"></button>
                     </div>
                 </div>

@@ -1,44 +1,35 @@
 let editButton = document.querySelector(".profile__edit-button");
-let popup = document.querySelector(".popup");
-let closeButton = document.querySelector(".popup__close-button");
-let saveButton = document.querySelector(".popup__button");
-let profileName = document.getElementById("username");
-let profileAboutMe = document.getElementById("aboutme");
-let popupName = document.getElementById("popupname");
-let popupAboutMe = document.getElementById("popupaboutme");
-let popupOverlay = document.getElementById("overlay");
+let popupWindow = document.querySelector(".popup");
+let closeButton = document.querySelector(".popup__close-button")
+let formElement = document.querySelector(".popup__form");
 
-function openPopupWindow() {
-    popup.classList.add("popup__displayed")
-    popupOverlay.classList.add("popup__overlay")
-}
-
-function closePopupWindow() {
-    popup.classList.remove("popup__displayed")
-    popupOverlay.classList.remove("popup__overlay")
-}
-
-function savePopupWindow() {
-    let nameTxt = popupName.value;
-    if (!(nameTxt === "")) {
-        profileName.textContent = nameTxt;
-        popupName.setAttribute("placeholder", nameTxt);
-        popupName.setAttribute("text", "");
+function togglePopupWindow() {
+    if (!popupWindow.classList.contains("popup_opened")) {
+        popupWindow.classList.add("popup_opened")
+    } else {
+        popupWindow.classList.remove("popup_opened")
     }
-
-    let aboutMeTxt = popupAboutMe.value;
-    if (!(aboutMeTxt === "")) {
-        profileAboutMe.textContent = aboutMeTxt;
-        popupAboutMe.setAttribute("placeholder", aboutMeTxt);
-        popupAboutMe.value = "";
-    }
-
-    closePopupWindow();
 }
 
+function handleProfileFormSubmit(evt) {
+    evt.preventDefault();
+    let nameInput = document.getElementById("popupname");
+    let jobInput = document.getElementById("popupaboutme");
 
-editButton.addEventListener("click", openPopupWindow);
+    let nameInputText = nameInput.value;
+    let jobInputText = jobInput.value;
 
-closeButton.addEventListener("click", closePopupWindow);
+    let profileName = document.getElementById("profilename");
+    let profileAboutMe = document.getElementById("profiledescription");
 
-saveButton.addEventListener("click", savePopupWindow);
+    profileName.textContent = nameInputText;
+    profileAboutMe.textContent = jobInputText;
+
+    togglePopupWindow();
+}
+
+closeButton.addEventListener("click", togglePopupWindow);
+
+formElement.addEventListener("submit", handleProfileFormSubmit);
+
+editButton.addEventListener("click", togglePopupWindow);
