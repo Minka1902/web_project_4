@@ -9,6 +9,12 @@
     margin: 0;
 }
 
+@media screen and (min-width: 580px) and (max-width: 750px) {
+    .profile__about-me {
+        width: 240px;
+    }
+}
+
 @media screen and (max-width: 579.5px) {
     .profile__about-me {
         font-size: 14px;

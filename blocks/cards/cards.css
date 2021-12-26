@@ -8,7 +8,7 @@
     grid-column-gap: 17px;
 }
 
-@media screen and (min-width: 581px) and (max-width: 879.5px) {
+@media screen and (min-width: 580px) and (max-width: 879.5px) {
     .cards {
         width: min-content;
         grid-template-columns: 282px 282px;
@@ -16,10 +16,11 @@
     }
 }
 
-@media screen and (max-width: 580.5px) {
+@media screen and (max-width: 579.5px) {
     .cards {
         width: 282px;
-        grid-column-gap: 0;
+        margin: 0 auto 50px;
+        grid-gap: 20px;
         grid-template-columns: 282px;
         grid-template-rows: repeat(6, min-content);
     }
