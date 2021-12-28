@@ -13,6 +13,7 @@
         width: min-content;
         grid-template-columns: 282px 282px;
         grid-template-rows: 1fr 1fr 1fr;
+        grid-column-gap: 16px;
     }
 }
 
