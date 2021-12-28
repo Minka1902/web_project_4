@@ -5,14 +5,14 @@
     margin: 22px 165px 0 0;
 }
 
-@media screen and (min-width: 581px) and (max-width: 879.5px) {
+@media screen and (min-width: 580px) and (max-width: 879.5px) {
     .profile__info {
-        margin: 0 20px 0 0;
+        margin: 0 30px 0 0;
         width: min-content;
     }
 }
 
-@media screen and (max-width: 580.5px) {
+@media screen and (max-width: 579.5px) {
     .profile__info {
         margin: 26.25px auto 36px;
     }

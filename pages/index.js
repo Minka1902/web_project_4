@@ -10,10 +10,10 @@ let profileAboutMe = document.getElementById("profiledescription");
 function togglePopupWindow() {
     if (!popupWindow.classList.contains("popup_opened")) {
         popupWindow.classList.add("popup_opened");
-    } else {
-        popupWindow.classList.remove("popup_opened");
         nameInput.value = profileName.textContent;
         jobInput.value = profileAboutMe.textContent;
+    } else {
+        popupWindow.classList.remove("popup_opened");
     }
 }
 
