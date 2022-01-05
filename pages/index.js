@@ -3,7 +3,7 @@ let popupWindow = document.querySelector(".popup");
 let addPopup = document.querySelector(".add")
 let addCloseButton = document.getElementById("addCloseButton");
 let editCloseButton = document.getElementById("editCloseButton");
-let formElement = document.querySelector(".popup__form");
+let editFormElement = document.getElementById("editform");
 let nameInput = document.getElementById("popupname");
 let jobInput = document.getElementById("popupaboutme");
 let popupTitle = popupWindow.querySelector(".popup__title");
@@ -11,10 +11,12 @@ let profileName = document.getElementById("profilename");
 let profileAboutMe = document.getElementById("profiledescription");
 let addButton = document.querySelector(".profile__add-button");
 let cards = document.querySelector(".cards");
-const likeButtons = document.querySelectorAll(".card__like-button");
+let titleInput = document.getElementById("title");
+let imageLinkInput = document.getElementById("imagelink");
+let addFormElement = document.getElementById("addform");
 
 // ! initial cards
-const initialCards = [{
+const cardsArray = [{
         name: "Yosemite Valley",
         link: "https://code.s3.yandex.net/web-code/yosemite.jpg"
     },
@@ -40,6 +42,49 @@ const initialCards = [{
     }
 ];
 
+// ! cards
+function createCards() {
+    for (let i = 0; i < cardsArray.length; i++) {
+        createCard(cardsArray[i]);
+    }
+}
+
+// * * this function creates a card from the cardArray it takes a card as a parameter
+function createCard(cardElem) {
+    // ! creating card
+    let card = document.createElement("div");
+    card.classList.add("card");
+
+    // ! creating image and trash icon
+    let cardDelete = document.createElement("img");
+    let cardImage = document.createElement("img");
+    cardDelete.classList.add("card__delete");
+    cardImage.classList.add("card__image");
+    cardImage.setAttribute("src", cardElem.link);
+    cardImage.setAttribute("alt", cardElem.name);
+    cardDelete.setAttribute("src", "./images/trash_icon.svg");
+
+    // ! creating card name and like button
+    let cardInfo = document.createElement("div");
+    cardInfo.classList.add("card__info");
+    let cardText = document.createElement("h2");
+    cardText.classList.add("card__text", "text-hiding");
+    cardText.textContent = cardElem.name;
+    let cardButton = document.createElement("button");
+    cardButton.classList.add("card__like-button");
+
+    // ! appending the elements according to correct sequence
+    cardInfo.append(cardText, cardButton);
+    card.append(cardDelete, cardImage, cardInfo);
+    cards.append(card);
+}
+
+createCards();
+let cardDeleteArray = document.querySelectorAll(".card__delete");
+
+// ! likes
+let likeButtons = document.querySelectorAll(".card__like-button");
+
 for (let i = 0; i < likeButtons.length; i++) {
     likeButtons[i].addEventListener("click", toggleLikeButton);
 }
@@ -52,15 +97,7 @@ function toggleLikeButton(event) {
     }
 }
 
-// function createCard() {
-//     const card = cards.createElement("div");
-//     card.classList.add("card");
-//     const cardImage = card.createElement("img");
-//     cardImage.classList.add("card__image");
-//     cardImage.setAttribute("src", "./images/cards_image4.png");
-//     cards.append(card);
-// }
-
+// ! popup toggle
 function toggleEditPopupWindow() {
     if (!popupWindow.classList.contains("popup_opened")) {
         popupWindow.classList.add("popup_opened");
@@ -79,6 +116,29 @@ function toggleAddPopupWindow() {
     }
 }
 
+// ! open image popup
+let cardImageArray = document.querySelectorAll(".card__image");
+let imagePopup = document.querySelector(".image")
+let imageCloseButton = document.querySelector(".popup__close-button_image");
+for (let i = 0; i < cardImageArray.length; i++) {
+    cardImageArray[i].addEventListener("click", openImagePopup);
+}
+
+function openImagePopup(evt) {
+    let popupImage = document.createElement("img");
+    popupImage.classList.add("popup__image");
+    popupImage.setAttribute("src", evt.currentTarget.src);
+    imagePopup.append(popupImage);
+    imagePopup.classList.toggle("popup_opened")
+}
+
+
+function closeImagePopup() {
+    imagePopup.classList.remove("popup_opened")
+    imagePopup.removeChild(imagePopup.childNodes[3]);
+}
+
+// ! edit form handle
 function handleProfileFormSubmit(evt) {
     evt.preventDefault();
 
@@ -91,11 +151,40 @@ function handleProfileFormSubmit(evt) {
     toggleEditPopupWindow();
 }
 
+// ! add form handle
+function handleAddFormSubmit(evt) {
+    evt.preventDefault();
+
+    let titleInputText = titleInput.value;
+    let imageLinkText = imageLinkInput.value;
+
+    createCard({
+        name: titleInputText,
+        link: imageLinkText
+    })
+
+    toggleAddPopupWindow();
+}
+
+// ! delete card
+for (let j = 0; j < cardDeleteArray.length; j++) {
+    cardDeleteArray[j].addEventListener("click", deleteCard);
+}
+
+function deleteCard(evt) {
+    cards.removeChild(evt.currentTarget.parentElement);
+}
+
+// ! calling event listeners
+addFormElement.addEventListener("submit", handleAddFormSubmit);
+
+imageCloseButton.addEventListener("click", closeImagePopup);
+
 editCloseButton.addEventListener("click", toggleEditPopupWindow);
 
 addCloseButton.addEventListener("click", toggleAddPopupWindow);
 
-formElement.addEventListener("submit", handleProfileFormSubmit);
+editFormElement.addEventListener("submit", handleProfileFormSubmit);
 
 editButton.addEventListener("click", toggleEditPopupWindow);
 

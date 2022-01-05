@@ -19,7 +19,7 @@
                 <div class="popup__content">
                     <button class="popup__close-button" id="editCloseButton" type="button"><img src="./images/close_icon.svg" alt="ex"></button>
                     <h2 class="popup__title">Edit profile</h2>
-                    <form class="popup__form" name="editform">
+                    <form class="popup__form" id="editform" name="editform">
                         <input class="popup__input" type="text" name="name" id="popupname" onfocus="this.value='';" placeholder="Jacques Cousteau">
                         <input class="popup__input" type="text" name="description" id="popupaboutme" onfocus="this.value='';" placeholder="Explorer">
                         <button class="popup__button" id="savebutton" type="submit">save</button>
@@ -31,12 +31,16 @@
                 <div class="popup__content">
                     <button class="popup__close-button" id="addCloseButton" type="button"><img src="./images/close_icon.svg" alt="ex"></button>
                     <h2 class="popup__title">New place</h2>
-                    <form class="popup__form" name="addform">
+                    <form class="popup__form" id="addform" name="addform">
                         <input class="popup__input" type="text" name="title" id="title" onfocus="this.value='';" placeholder="Title">
                         <input class="popup__input" type="text" name="imagelink" id="imagelink" onfocus="this.value='';" placeholder="Image link">
                         <button class="popup__button" id="createbutton" type="submit">Create</button>
                     </form>
                 </div>
+            </div>
+
+            <div class="popup image">
+                <button class="popup__close-button popup__close-button_image" id="imageCloseButton" type="button"><img src="./images/close_icon.svg" alt="ex"></button>
             </div>
 
             <section class="profile">
@@ -52,53 +56,6 @@
             </section>
 
             <section class="cards">
-                <div class="card">
-                    <img class="card__image" src="./images/cards_image1.png" alt="Yosemite Valley">
-                    <div class="card__info">
-                        <h2 class="card__text text-hiding">Yosemite Valley</h2>
-                        <button type="button" id="likeButton1" class="card__like-button"></button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img class="card__image" src="./images/cards_image2.png" alt="Lake Louise">
-                    <div class="card__info">
-                        <h2 class="card__text text-hiding">Lake Louise</h2>
-                        <button type="button" id="likeButton2" class="card__like-button"></button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img class="card__image" src="./images/cards_image3.png" alt="Bald Mountains">
-                    <div class="card__info">
-                        <h2 class="card__text text-hiding">Bald Mountains</h2>
-                        <button type="button" id="likeButton3" class="card__like-button"></button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img class="card__image" src="./images/cards_image4.png" alt="Bald Mountains">
-                    <div class="card__info">
-                        <h2 class="card__text text-hiding">Bald Mountains</h2>
-                        <button type="button" id="likeButton4" class="card__like-button"></button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img class="card__image" src="./images/cards_image5.png" alt="Vanoise National Park">
-                    <div class="card__info">
-                        <h2 class="card__text text-hiding">Vanoise Nationa...</h2>
-                        <button type="button" id="likeButton5" class="card__like-button"></button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img class="card__image" src="./images/cards_image6.png" alt="Lago di Braies">
-                    <div class="card__info">
-                        <h2 class="card__text text-hiding">Lago di Braies</h2>
-                        <button type="button" id="likeButton6" class="card__like-button"></button>
-                    </div>
-                </div>
             </section>
         </main>
 
@@ -108,6 +65,7 @@
     </div>
 
     <script src="./pages/index.js"></script>
+    <!-- <script src="./pages/init_page.js"></script> -->
 </body>
 
 </html>
