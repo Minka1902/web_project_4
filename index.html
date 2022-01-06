@@ -15,32 +15,33 @@
         </header>
 
         <main>
-            <div class="popup">
+            <div class="popup profile_popup">
                 <div class="popup__content">
                     <button class="popup__close-button" id="editCloseButton" type="button"><img src="./images/close_icon.svg" alt="ex"></button>
                     <h2 class="popup__title">Edit profile</h2>
                     <form class="popup__form" id="editform" name="editform">
-                        <input class="popup__input" type="text" name="name" id="popupname" onfocus="this.value='';" placeholder="Jacques Cousteau">
-                        <input class="popup__input" type="text" name="description" id="popupaboutme" onfocus="this.value='';" placeholder="Explorer">
+                        <input class="popup__input" type="text" name="name" id="popupname" placeholder="Jacques Cousteau">
+                        <input class="popup__input" type="text" name="description" id="popupaboutme" placeholder="Explorer">
                         <button class="popup__button" id="savebutton" type="submit">save</button>
                     </form>
                 </div>
             </div>
 
-            <div class="popup add">
+            <div class="popup add_popup">
                 <div class="popup__content">
                     <button class="popup__close-button" id="addCloseButton" type="button"><img src="./images/close_icon.svg" alt="ex"></button>
                     <h2 class="popup__title">New place</h2>
                     <form class="popup__form" id="addform" name="addform">
-                        <input class="popup__input" type="text" name="title" id="title" onfocus="this.value='';" placeholder="Title">
-                        <input class="popup__input" type="text" name="imagelink" id="imagelink" onfocus="this.value='';" placeholder="Image link">
+                        <input class="popup__input" type="text" name="title" id="title" placeholder="Title">
+                        <input class="popup__input" type="text" name="imagelink" id="imagelink" placeholder="Image link">
                         <button class="popup__button" id="createbutton" type="submit">Create</button>
                     </form>
                 </div>
             </div>
 
-            <div class="popup image">
+            <div class="popup image_popup">
                 <button class="popup__close-button popup__close-button_image" id="imageCloseButton" type="button"><img src="./images/close_icon.svg" alt="ex"></button>
+                <img class="popup__image" src="" alt="">
             </div>
 
             <section class="profile">
@@ -64,8 +65,18 @@
         </footer>
     </div>
 
+    <template id="cardtemplate">
+        <div class="card">
+            <img class="card__image" src="" alt="">
+            <img class="card__delete" src="./images/trash_icon.svg" alt="ex">
+            <div class="card__info">
+                <h2 class="card__text text-hiding"></h2>
+                <button class="card__like-button"></button>
+            </div>
+        </div>
+    </template>
+
     <script src="./pages/index.js"></script>
-    <!-- <script src="./pages/init_page.js"></script> -->
 </body>
 
 </html>
