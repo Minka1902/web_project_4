@@ -6,7 +6,7 @@
     background-color: transparent;
     border: none;
     top: -40px;
-    right: -390px;
+    left: 110%;
 }
 
 .popup__close-button:hover {
