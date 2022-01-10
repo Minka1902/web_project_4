@@ -17,9 +17,6 @@ const addFormElement = document.getElementById("addform");
 const cardTemplate = document.querySelector("#cardtemplate").content;
 const createdPopupImage = document.querySelector(".popup__image");
 const createdPopupText = document.querySelector(".popup__text");
-let cardDeleteArray = document.querySelectorAll(".card__delete");
-let likeButtons = document.querySelectorAll(".card__like-button");
-let cardImageArray = document.querySelectorAll(".card__image");
 
 // ! initial cards
 const cardsArray = [{
@@ -55,18 +52,23 @@ function createCards() {
     }
 }
 
+function createCard(cardElem) {
+    const carde = getCard(cardElem);
+    cards.prepend(carde);
+}
+
 // * * this function creates a card from the cardArray it takes a card as a parameter and 
 // * * calls the addEventListener for every card
-function createCard(cardElem) {
+function getCard(cardElem) {
     const card = cardTemplate.querySelector(".card").cloneNode(true);
+    const cardImage = card.querySelector(".card__image");
     card.querySelector(".card__text").textContent = cardElem.name;
-    card.querySelector(".card__image").src = cardElem.link;
-    card.querySelector(".card__image").alt = "A view of " + cardElem.name;
-    cards.prepend(card);
-
+    cardImage.src = cardElem.link;
+    cardImage.alt = "A view of " + cardElem.name;
     card.querySelector(".card__like-button").addEventListener("click", toggleLikeButton);
     card.querySelector(".card__delete").addEventListener("click", deleteCard);
-    card.querySelector(".card__image").addEventListener("click", toggleImagePopupWindow);
+    cardImage.addEventListener("click", toggleImagePopupWindow);
+    return card;
 }
 
 createCards();
@@ -106,8 +108,8 @@ function toggleAddPopupWindow() {
 }
 
 // ! open image popup
-let imagePopup = document.querySelector(".popup_image");
-let imageCloseButton = document.querySelector(".popup__close-button_image");
+const imagePopup = document.querySelector(".popup_image");
+const imageCloseButton = document.querySelector(".popup__close-button_image");
 
 function toggleImagePopupWindow(evt) {
     if (!imagePopup.classList.contains("popup_opened")) {
@@ -124,8 +126,8 @@ function toggleImagePopupWindow(evt) {
 function handleProfileFormSubmit(evt) {
     evt.preventDefault();
 
-    let nameInputText = nameInput.value;
-    let jobInputText = jobInput.value;
+    const nameInputText = nameInput.value;
+    const jobInputText = jobInput.value;
 
 
     profileName.textContent = nameInputText;
@@ -138,8 +140,8 @@ function handleProfileFormSubmit(evt) {
 function handleAddFormSubmit(evt) {
     evt.preventDefault();
 
-    let titleInputText = titleInput.value;
-    let imageLinkText = imageLinkInput.value;
+    const titleInputText = titleInput.value;
+    const imageLinkText = imageLinkInput.value;
 
     createCard({
         name: titleInputText,
