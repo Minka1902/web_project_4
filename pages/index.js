@@ -17,6 +17,8 @@ const addFormElement = document.getElementById("addform");
 const cardTemplate = document.querySelector("#cardtemplate").content;
 const createdPopupImage = document.querySelector(".popup__image");
 const createdPopupText = document.querySelector(".popup__text");
+const popupArray = document.querySelectorAll(".popup");
+const inputArray = document.querySelectorAll(".popup__input");
 
 // ! initial cards
 const cardsArray = [{
@@ -157,17 +159,71 @@ function deleteCard(evt) {
     cards.removeChild(evt.currentTarget.parentElement);
 }
 
+inputArray.forEach((inputElement) => {
+    inputElement.addEventListener("input", function(evt) {
+        const formButton = evt.target.form.querySelector(".popup__button");
+
+        // * * here i link the error massage to the correct input
+        const errorMassage = evt.target.parentElement.querySelector(`.${evt.target.id}-error`);
+
+        // ! this part of the function removes the classes and attributes that
+        // ! make the input error massage appear and disappeare 
+        if (checkValidity(evt.target.parentElement)) {
+            formButton.classList.remove("popup__button_invalid");
+            errorMassage.classList.remove("popup__error-massage_visible");
+            evt.target.classList.remove("popup__input_type_error");
+            formButton.disabled = false;
+        } else {
+            formButton.classList.add("popup__button_invalid");
+            errorMassage.classList.add("popup__error-massage_visible");
+            evt.target.classList.add("popup__input_type_error");
+            formButton.disabled = true;
+        }
+    });
+});
+
 // ! calling event listeners
 addFormElement.addEventListener("submit", handleAddFormSubmit);
 
-imageCloseButton.addEventListener("click", toggleImagePopupWindow);
+editFormElement.addEventListener("submit", handleProfileFormSubmit);
 
 editCloseButton.addEventListener("click", toggleEditPopupWindow);
 
 addCloseButton.addEventListener("click", toggleAddPopupWindow);
 
-editFormElement.addEventListener("submit", handleProfileFormSubmit);
+imageCloseButton.addEventListener("click", toggleImagePopupWindow);
 
 editButton.addEventListener("click", toggleEditPopupWindow);
 
 addButton.addEventListener("click", toggleAddPopupWindow);
+
+document.addEventListener("keyup", function(evt) {
+    if (evt.code === "Escape") {
+        for (let i = 0; i < popupArray.length; i++) {
+            if (popupArray[i].classList.contains("popup_opened")) {
+                popupArray[i].classList.remove("popup_opened");
+                break;
+            }
+        }
+    }
+});
+
+popupArray.forEach((popupElement) => {
+    popupElement.addEventListener("click", function(evt) {
+        if (evt.target.classList.contains("popup")) {
+            closePopup(popupElement);
+        }
+    });
+});
+
+function checkValidity(formElement) {
+    // ! this function checkes if the form is valid
+    const inputList = formElement.querySelectorAll(".popup__input");
+    let isValid = true;
+    inputList.forEach((inputElement) => {
+        if (!inputElement.validity.valid) {
+            isValid = false;
+        }
+    });
+    return isValid;
+}
