@@ -19,7 +19,7 @@
                 <div class="popup__content">
                     <button class="popup__close-button" id="editCloseButton" type="button"><img src="./images/close_icon.svg" alt="ex"></button>
                     <h2 class="popup__title">Edit profile</h2>
-                    <form class="popup__form" id="editform" name="editform">
+                    <form class="popup__form" id="editform" name="editform" novalidate>
                         <input class="popup__input" required type="text" name="name" minlength="2" maxlength="40" id="popupname" placeholder="Jacques Cousteau">
                         <h4 class="popup__error-massage popupname-error">Please fill out this field.</h4>
                         <input class="popup__input" required type="text" name="description" minlength="2" maxlength="200" id="popupaboutme" placeholder="Explorer">
@@ -84,6 +84,7 @@
     </template>
 
     <script src="./pages/index.js"></script>
+    <script src="./pages/validate.js"></script>
 </body>
 
 </html>

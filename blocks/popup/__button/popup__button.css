@@ -15,6 +15,11 @@
     margin: 0 0 36px 0;
 }
 
+.popup__button:hover:not(:disabled) {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
 .popup__button:hover {
     opacity: 0.8;
     cursor: pointer;

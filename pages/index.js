@@ -54,9 +54,9 @@ function createCards() {
     }
 }
 
-function createCard(cardElem) {
-    const carde = getCard(cardElem);
-    cards.prepend(carde);
+function createCard(cardElement) {
+    const card = getCard(cardElement);
+    cards.prepend(card);
 }
 
 // * * this function creates a card from the cardArray it takes a card as a parameter and 
@@ -81,13 +81,26 @@ function toggleLikeButton(event) {
     event.currentTarget.classList.toggle("info__card_like-button_state_active");
 }
 
+function checkEscapeClicked(evt) {
+    if (evt.code == "Escape") {
+        for (let i = 0; i < popupArray.length; i++) {
+            if (popupArray[i].classList.contains("popup_opened")) {
+                closePopup(popupArray[i]);
+                break;
+            }
+        }
+    }
+}
+
 // ! popup toggle
 function openPopup(popup) { // * * takes a popup as a parameter and opens it
     popup.classList.add('popup_opened');
+    document.addEventListener("keyup", checkEscapeClicked);
 }
 
 function closePopup(popup) { // * * takes a popup as a parameter and closes it
     popup.classList.remove('popup_opened');
+    popup.removeEventListener("keydown", checkEscapeClicked);
 }
 
 // * * this function toggles the popup window for the edit window 
@@ -135,6 +148,7 @@ function handleProfileFormSubmit(evt) {
     profileName.textContent = nameInputText;
     profileAboutMe.textContent = jobInputText;
 
+    checkValidity(profilePopup);
     toggleEditPopupWindow();
 }
 
@@ -151,6 +165,7 @@ function handleAddFormSubmit(evt) {
     })
 
     addFormElement.reset();
+    checkValidity(addPopup);
     toggleAddPopupWindow();
 }
 
@@ -158,29 +173,6 @@ function handleAddFormSubmit(evt) {
 function deleteCard(evt) {
     cards.removeChild(evt.currentTarget.parentElement);
 }
-
-inputArray.forEach((inputElement) => {
-    inputElement.addEventListener("input", function(evt) {
-        const formButton = evt.target.form.querySelector(".popup__button");
-
-        // * * here i link the error massage to the correct input
-        const errorMassage = evt.target.parentElement.querySelector(`.${evt.target.id}-error`);
-
-        // ! this part of the function removes the classes and attributes that
-        // ! make the input error massage appear and disappeare 
-        if (checkValidity(evt.target.parentElement)) {
-            formButton.classList.remove("popup__button_invalid");
-            errorMassage.classList.remove("popup__error-massage_visible");
-            evt.target.classList.remove("popup__input_type_error");
-            formButton.disabled = false;
-        } else {
-            formButton.classList.add("popup__button_invalid");
-            errorMassage.classList.add("popup__error-massage_visible");
-            evt.target.classList.add("popup__input_type_error");
-            formButton.disabled = true;
-        }
-    });
-});
 
 // ! calling event listeners
 addFormElement.addEventListener("submit", handleAddFormSubmit);
@@ -197,33 +189,12 @@ editButton.addEventListener("click", toggleEditPopupWindow);
 
 addButton.addEventListener("click", toggleAddPopupWindow);
 
-document.addEventListener("keyup", function(evt) {
-    if (evt.code === "Escape") {
-        for (let i = 0; i < popupArray.length; i++) {
-            if (popupArray[i].classList.contains("popup_opened")) {
-                popupArray[i].classList.remove("popup_opened");
-                break;
-            }
-        }
-    }
-});
-
+// * * once you click your mouse on the popup overlay
+// * * this checks if you press the overlay or the popup content
 popupArray.forEach((popupElement) => {
-    popupElement.addEventListener("click", function(evt) {
+    popupElement.addEventListener("mousedown", function(evt) {
         if (evt.target.classList.contains("popup")) {
             closePopup(popupElement);
         }
     });
 });
-
-function checkValidity(formElement) {
-    // ! this function checkes if the form is valid
-    const inputList = formElement.querySelectorAll(".popup__input");
-    let isValid = true;
-    inputList.forEach((inputElement) => {
-        if (!inputElement.validity.valid) {
-            isValid = false;
-        }
-    });
-    return isValid;
-}

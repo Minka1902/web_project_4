@@ -4,4 +4,10 @@
     color: black;
     box-sizing: border-box;
     background-color: white;
+    cursor: default;
+}
+
+.popup__button_invalid:hover {
+    opacity: 0.2;
+    cursor: default;
 }
