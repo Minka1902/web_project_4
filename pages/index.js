@@ -66,7 +66,7 @@ function getCard(cardElem) {
     const cardImage = card.querySelector(".card__image");
     card.querySelector(".card__text").textContent = cardElem.name;
     cardImage.src = cardElem.link;
-    cardImage.alt = "A view of " + cardElem.name;
+    cardImage.alt = `A view of ${cardElem.name}`;
     card.querySelector(".card__like-button").addEventListener("click", toggleLikeButton);
     card.querySelector(".card__delete").addEventListener("click", deleteCard);
     cardImage.addEventListener("click", openImagePopup);
@@ -89,15 +89,13 @@ function checkEscapeClicked(evt) {
 
 // ! popup toggle
 function openPopup(popup) { // * * takes a popup as a parameter and opens it
-    document.addEventListener("keydown", checkEscapeClicked);
     popup.classList.add('popup_opened');
-    popup.style.zIndex = "1";
+    document.addEventListener("keydown", checkEscapeClicked);
 }
 
 function closePopup(popup) { // * * takes a popup as a parameter and closes it
     popup.classList.remove('popup_opened');
     document.removeEventListener("keydown", checkEscapeClicked);
-    popup.style.zIndex = "0";
 }
 
 // * * this function toggles the popup window for the edit window 
@@ -110,6 +108,7 @@ function toggleEditPopupWindow() {
         closePopup(profilePopup);
     }
 }
+
 // * * this function toggles the popup window for the add window 
 function toggleAddPopupWindow() {
     if (!addPopup.classList.contains("popup_opened")) {
@@ -119,7 +118,7 @@ function toggleAddPopupWindow() {
     }
 }
 
-// ! toggle image popup
+// * * this function toggles the popup window for the image window 
 const imagePopup = document.querySelector(".popup_image");
 const imageCloseButton = document.querySelector(".popup__close-button_image");
 
@@ -161,7 +160,7 @@ function handleAddFormSubmit(evt) {
     })
 
     addFormElement.reset();
-    toggleButtonState(addPopup.querySelector(".popup__button"), false);
+    toggleButtonState(addPopup.querySelector(".popup__button"), "popup__button_invalid", false);
     toggleAddPopupWindow();
 }
 

@@ -1,9 +1,49 @@
-function checkValidity(formElement) {
-    // ! this function checkes if the form is valid
-    const inputList = formElement.querySelectorAll(".popup__input");
+function enableValidation(settings) {
+    const {
+        formSelector,
+        inputSelector,
+        submitButtonSelector,
+        inactiveButtonClass,
+        inputErrorClass,
+        errorClass
+    } = settings || {};
+
+    if (formSelector) {
+        const forms = [...document.querySelectorAll(formSelector)];
+        forms.forEach((formElement) => {
+            formElement.addEventListener("submit", (e) => e.preventDefault());
+            const inputs = [...formElement.querySelectorAll(inputSelector)];
+            inputs.forEach((inputElement) => {
+                inputElement.addEventListener("input", function(evt) {
+                    handleInputEvent(evt.target, inputErrorClass, errorClass);
+                    handleForm(inputElement.parentElement, submitButtonSelector, inactiveButtonClass, inputSelector);
+                });
+            });
+            // handleForm(formElement, submitButtonSelector, inactiveButtonClass, inputSelector);
+        });
+    }
+}
+
+enableValidation({
+    formSelector: ".popup__form",
+    inputSelector: ".popup__input",
+    submitButtonSelector: ".popup__button",
+    inactiveButtonClass: "popup__button_invalid",
+    inputErrorClass: "popup__input_type_error",
+    errorClass: "popup__error-massage_visible"
+});
+
+// ! this function checkes if the input is valid
+function checkInputValidity(inputElement) {
+    return inputElement.validity.valid;
+}
+
+// ! this function checkes if the form is valid
+function checkFormValidity(formElement, inputSelector) {
+    const inputList = [...formElement.querySelectorAll(inputSelector)];
     let isValid = true;
     for (let i = 0; i < inputList.length; i++) {
-        if (!inputList[i].validity.valid) {
+        if (!checkInputValidity(inputList[i])) {
             isValid = false;
         }
     }
@@ -11,50 +51,45 @@ function checkValidity(formElement) {
 }
 
 // ! this function hides the error massage
-function hideErrorMessage(errorMassage) {
-    errorMassage.classList.remove("popup__error-massage_visible");
+function hideErrorMessage(errorMassage, errorClass) {
+    errorMassage.classList.remove(errorClass);
 }
 
 // ! this function shows the error massage
-function showErrorMessage(errorMassage) {
-    errorMassage.classList.add("popup__error-massage_visible");
+function showErrorMessage(errorMassage, errorClass) {
+    errorMassage.classList.add(errorClass);
 }
 
-// ! this function handles the error and button state according to the input
-function handleInput(inputElement) {
+// ! this function handles the button state according to the form validity
+function handleForm(formElement, submitButtonSelector, inactiveButtonClass, inputSelector) {
+    const formButton = formElement.querySelector(submitButtonSelector);
+    if (checkFormValidity(formElement, inputSelector)) {
+        toggleButtonState(formButton, inactiveButtonClass, true);
+    } else {
+        toggleButtonState(formButton, inactiveButtonClass, false);
+    }
+}
+
+// ! this function handles the error massage state according to the input validity
+function handleInputEvent(inputElement, inputErrorClass, errorClass) {
     const errorMassage = inputElement.parentElement.querySelector(`.${inputElement.id}-error`);
 
-    if (inputElement.validity.valid) {
-        hideErrorMessage(errorMassage);
-        inputElement.classList.remove("popup__input_type_error");
+    if (checkInputValidity(inputElement)) {
+        hideErrorMessage(errorMassage, errorClass);
+        inputElement.classList.remove(inputErrorClass);
     } else {
-        showErrorMessage(errorMassage);
-        inputElement.classList.add("popup__input_type_error");
-    }
-    handleForm(inputElement.parentElement);
-}
-
-function handleForm(formElement) {
-    const formButton = formElement.querySelector(".popup__button");
-    if (checkValidity(formElement)) {
-        toggleButtonState(formButton, true);
-    } else {
-        toggleButtonState(formButton, false);
+        showErrorMessage(errorMassage, errorClass);
+        inputElement.classList.add(inputErrorClass);
     }
 }
 
-inputArray.forEach((inputElement) => {
-    inputElement.addEventListener("input", function(evt) {
-        handleInput(evt.target);
-    });
-});
-
-function toggleButtonState(button, isValid) {
+// ! this function toggles button state
+function toggleButtonState(button, inactiveButtonClass, isValid) {
     if (isValid) {
-        button.classList.remove("popup__button_invalid");
+        button.classList.remove(inactiveButtonClass);
         button.disabled = false;
     } else {
-        button.classList.add("popup__button_invalid");
+        button.classList.add(inactiveButtonClass);
         button.disabled = true;
     }
 }

@@ -1,41 +1,51 @@
-function enableValidation({
-    formSelector,
-    inputSelector,
-    submitButtonSelector,
-    inactiveButtonClass,
-    inputErrorClass,
-    errorClass
-}) {
-    // ! i dont understand what to do here
-    // ! if you can explain or give me an example it would be great
+function enableValidation(settings) {
+    const {
+        formSelector,
+        inputSelector,
+        submitButtonSelector,
+        inactiveButtonClass,
+        inputErrorClass,
+        errorClass
+    } = settings || {};
+
+    if (formSelector) {
+        const forms = [...document.querySelectorAll(formSelector)];
+        forms.forEach((formElement) => {
+            formElement.addEventListener("submit", (e) => e.preventDefault());
+            const inputs = [...formElement.querySelectorAll(inputSelector)];
+            inputs.forEach((inputElement) => {
+                inputElement.addEventListener("input", function(evt) {
+                    handleInputEvent(evt.target, inputErrorClass, errorClass);
+                    handleForm(inputElement.parentElement, submitButtonSelector, inactiveButtonClass, inputSelector);
+                });
+            });
+            handleForm(formElement, submitButtonSelector, inactiveButtonClass, inputSelector);
+        });
+    }
 }
 
-const inputSelector = addPopup.querySelector("#addform");
-const formButton = addPopup.querySelector("popup__button");
-const invalidButtonClass = "popup__button_invalid";
-const inputErrorClass = "popup__input_type_error";
-const errorClass = "popup__error-massage";
-enableValidation({ addPopup, inputSelector, formButton, inactiveButtonClass, inputErrorClass, errorClass });
+function checkInputValidity(inputElement) {
+    return inputElement.validity.valid;
+}
 
-// inputArray.forEach((inputElement) => {
-//     inputElement.addEventListener("keydown", function(evt) {
-//         const formButton = evt.target.form.querySelector(".popup__button");
+// ! this function handles the error and button state according to the input
+function handleInputEvent(inputElement, inputErrorClass, errorClass) {
+    const errorMassage = inputElement.parentElement.querySelector(`.${inputElement.id}-error`);
 
-//         // * * here i link the error massage to the correct input
-//         const errorMessage = evt.target.parentElement.querySelector(`.${evt.target.id}-error`);
+    if (checkInputValidity(inputElement)) {
+        hideErrorMessage(errorMassage, errorClass);
+        inputElement.classList.remove(inputErrorClass);
+    } else {
+        showErrorMessage(errorMassage, errorClass);
+        inputElement.classList.add(inputErrorClass);
+    }
+}
 
-//         // ! this part of the function removes the classes and attributes that
-//         // ! make the input error massage appear and disappeare 
-//         if (checkValidity(evt.target.parentElement)) {
-//             toggleButtonState(formButton);
-//             errorMessage.classList.remove("popup__error-massage_visible");
-//             evt.target.classList.remove("popup__input_type_error");
-//             formButton.disabled = false;
-//         } else {
-//             toggleButtonState(formButton);
-//             errorMessage.classList.add("popup__error-massage_visible");
-//             evt.target.classList.add("popup__input_type_error");
-//             formButton.disabled = true;
-//         }
-//     });
-// });
+enableValidation({
+    formSelector: ".popup__form",
+    inputSelector: ".popup__input",
+    submitButtonSelector: ".popup__button",
+    inactiveButtonClass: "popup__button_invalid",
+    inputErrorClass: "popup__input_type_error",
+    errorClass: "popup__error-massage_visible"
+});

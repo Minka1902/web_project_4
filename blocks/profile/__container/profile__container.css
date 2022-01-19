@@ -1,7 +1,6 @@
 .profile__container {
     display: flex;
     flex-direction: row;
-    z-index: 1;
 }
 
 @media screen and (max-width: 579.5px) {
