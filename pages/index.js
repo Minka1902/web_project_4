@@ -69,7 +69,7 @@ function getCard(cardElem) {
     cardImage.alt = "A view of " + cardElem.name;
     card.querySelector(".card__like-button").addEventListener("click", toggleLikeButton);
     card.querySelector(".card__delete").addEventListener("click", deleteCard);
-    cardImage.addEventListener("click", toggleImagePopupWindow);
+    cardImage.addEventListener("click", openImagePopup);
     return card;
 }
 
@@ -83,24 +83,21 @@ function toggleLikeButton(event) {
 
 function checkEscapeClicked(evt) {
     if (evt.code == "Escape") {
-        for (let i = 0; i < popupArray.length; i++) {
-            if (popupArray[i].classList.contains("popup_opened")) {
-                closePopup(popupArray[i]);
-                break;
-            }
-        }
+        closePopup(document.querySelector(".popup_opened"));
     }
 }
 
 // ! popup toggle
 function openPopup(popup) { // * * takes a popup as a parameter and opens it
+    document.addEventListener("keydown", checkEscapeClicked);
     popup.classList.add('popup_opened');
-    document.addEventListener("keyup", checkEscapeClicked);
+    popup.style.zIndex = "1";
 }
 
 function closePopup(popup) { // * * takes a popup as a parameter and closes it
     popup.classList.remove('popup_opened');
-    popup.removeEventListener("keydown", checkEscapeClicked);
+    document.removeEventListener("keydown", checkEscapeClicked);
+    popup.style.zIndex = "0";
 }
 
 // * * this function toggles the popup window for the edit window 
@@ -122,19 +119,19 @@ function toggleAddPopupWindow() {
     }
 }
 
-// ! open image popup
+// ! toggle image popup
 const imagePopup = document.querySelector(".popup_image");
 const imageCloseButton = document.querySelector(".popup__close-button_image");
 
-function toggleImagePopupWindow(evt) {
-    if (!imagePopup.classList.contains("popup_opened")) {
-        createdPopupImage.setAttribute("src", evt.currentTarget.src);
-        createdPopupImage.setAttribute("alt", evt.currentTarget.alt);
-        createdPopupText.textContent = evt.currentTarget.parentElement.textContent;
-        openPopup(imagePopup);
-    } else {
-        closePopup(imagePopup);
-    }
+function openImagePopup(evt) {
+    createdPopupImage.setAttribute("src", evt.currentTarget.src);
+    createdPopupImage.setAttribute("alt", evt.currentTarget.alt);
+    createdPopupText.textContent = evt.currentTarget.parentElement.textContent;
+    openPopup(imagePopup);
+}
+
+function closeImagePopup() {
+    closePopup(imagePopup);
 }
 
 // ! edit form handle
@@ -148,7 +145,6 @@ function handleProfileFormSubmit(evt) {
     profileName.textContent = nameInputText;
     profileAboutMe.textContent = jobInputText;
 
-    checkValidity(profilePopup);
     toggleEditPopupWindow();
 }
 
@@ -165,7 +161,7 @@ function handleAddFormSubmit(evt) {
     })
 
     addFormElement.reset();
-    checkValidity(addPopup);
+    toggleButtonState(addPopup.querySelector(".popup__button"), false);
     toggleAddPopupWindow();
 }
 
@@ -183,11 +179,11 @@ editCloseButton.addEventListener("click", toggleEditPopupWindow);
 
 addCloseButton.addEventListener("click", toggleAddPopupWindow);
 
-imageCloseButton.addEventListener("click", toggleImagePopupWindow);
-
 editButton.addEventListener("click", toggleEditPopupWindow);
 
 addButton.addEventListener("click", toggleAddPopupWindow);
+
+imageCloseButton.addEventListener("click", closeImagePopup);
 
 // * * once you click your mouse on the popup overlay
 // * * this checks if you press the overlay or the popup content

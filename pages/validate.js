@@ -1,38 +1,60 @@
 function checkValidity(formElement) {
     // ! this function checkes if the form is valid
     const inputList = formElement.querySelectorAll(".popup__input");
-    inputList.forEach((inputElement) => {
-        if (!inputElement.validity.valid) {
-            formElement.querySelector(".popup__button").classList.add("popup__button_invalid");
-            return false;
+    let isValid = true;
+    for (let i = 0; i < inputList.length; i++) {
+        if (!inputList[i].validity.valid) {
+            isValid = false;
         }
-    });
-    return true;
+    }
+    return isValid;
+}
+
+// ! this function hides the error massage
+function hideErrorMessage(errorMassage) {
+    errorMassage.classList.remove("popup__error-massage_visible");
+}
+
+// ! this function shows the error massage
+function showErrorMessage(errorMassage) {
+    errorMassage.classList.add("popup__error-massage_visible");
+}
+
+// ! this function handles the error and button state according to the input
+function handleInput(inputElement) {
+    const errorMassage = inputElement.parentElement.querySelector(`.${inputElement.id}-error`);
+
+    if (inputElement.validity.valid) {
+        hideErrorMessage(errorMassage);
+        inputElement.classList.remove("popup__input_type_error");
+    } else {
+        showErrorMessage(errorMassage);
+        inputElement.classList.add("popup__input_type_error");
+    }
+    handleForm(inputElement.parentElement);
+}
+
+function handleForm(formElement) {
+    const formButton = formElement.querySelector(".popup__button");
+    if (checkValidity(formElement)) {
+        toggleButtonState(formButton, true);
+    } else {
+        toggleButtonState(formButton, false);
+    }
 }
 
 inputArray.forEach((inputElement) => {
-    inputElement.addEventListener("keydown", function(evt) {
-        const formButton = evt.target.form.querySelector(".popup__button");
-
-        // * * here i link the error massage to the correct input
-        const errorMessage = evt.target.parentElement.querySelector(`.${evt.target.id}-error`);
-
-        // ! this part of the function removes the classes and attributes that
-        // ! make the input error massage appear and disappeare 
-        if (checkValidity(evt.target.parentElement)) {
-            toggleButtonState(formButton);
-            errorMessage.classList.remove("popup__error-massage_visible");
-            evt.target.classList.remove("popup__input_type_error");
-            formButton.disabled = false;
-        } else {
-            toggleButtonState(formButton);
-            errorMessage.classList.add("popup__error-massage_visible");
-            evt.target.classList.add("popup__input_type_error");
-            formButton.disabled = true;
-        }
+    inputElement.addEventListener("input", function(evt) {
+        handleInput(evt.target);
     });
 });
 
-function toggleButtonState(button) {
-    button.classList.toggle("popup__button_invalid");
+function toggleButtonState(button, isValid) {
+    if (isValid) {
+        button.classList.remove("popup__button_invalid");
+        button.disabled = false;
+    } else {
+        button.classList.add("popup__button_invalid");
+        button.disabled = true;
+    }
 }
