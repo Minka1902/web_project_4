@@ -81,6 +81,8 @@ function toggleLikeButton(event) {
     event.currentTarget.classList.toggle("info__card_like-button_state_active");
 }
 
+// ! Escape
+// * * this function checks if the "Escape" button was clicked if so she closes the popup 
 function checkEscapeClicked(evt) {
     if (evt.code == "Escape") {
         closePopup(document.querySelector(".popup_opened"));
@@ -96,6 +98,9 @@ function openPopup(popup) { // * * takes a popup as a parameter and opens it
 function closePopup(popup) { // * * takes a popup as a parameter and closes it
     popup.classList.remove('popup_opened');
     document.removeEventListener("keydown", checkEscapeClicked);
+    if (popup.classList.contains("popup_add")) {
+        addFormElement.reset();
+    }
 }
 
 // * * this function toggles the popup window for the edit window 
@@ -115,6 +120,7 @@ function toggleAddPopupWindow() {
         openPopup(addPopup);
     } else {
         closePopup(addPopup);
+        addFormElement.reset();
     }
 }
 
@@ -167,6 +173,11 @@ function handleAddFormSubmit(evt) {
 // ! delete card
 function deleteCard(evt) {
     cards.removeChild(evt.currentTarget.parentElement);
+}
+
+// ! reset the popup
+function resetPopup(popupElement) {
+    popupElement.querySelector(".popup__form").reset();
 }
 
 // ! calling event listeners
