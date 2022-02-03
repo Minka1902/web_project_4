@@ -1,10 +1,10 @@
 export class FormValidator {
     constructor(settings, formToValidate) {
         this._form = formToValidate;
-        this._getSettings(settings);
+        this._setSettings(settings);
     }
 
-    _getSettings(settings) {
+    _setSettings(settings) {
         this._formSelector = settings.formSelector;
         this._inputSelector = settings.inputSelector;
         this._submitButtonSelector = settings.submitButtonSelector;
@@ -20,22 +20,22 @@ export class FormValidator {
             inputs.forEach((inputElement) => {
                 inputElement.addEventListener("input", (evt) => {
                     this._handleInputEvent(evt.target, this._inputErrorClass, this._errorClass);
-                    this._handleForm(this._submitButtonSelector, this._inactiveButtonClass, this._inputSelector);
+                    this._handleForm();
                 });
             });
         }
     }
 
     // ! this function handles the error massage state according to the input validity
-    _handleInputEvent(inputElement, inputErrorClass, errorClass) {
+    _handleInputEvent(inputElement) {
         const errorMassage = inputElement.parentElement.querySelector(`.${inputElement.id}-error`);
 
         if (this._checkInputValidity(inputElement)) {
-            this._hideErrorMessage(errorMassage, errorClass);
-            inputElement.classList.remove(inputErrorClass);
+            this._hideErrorMessage(errorMassage, this._errorClass);
+            inputElement.classList.remove(this._inputErrorClass);
         } else {
-            this._showErrorMessage(errorMassage, errorClass);
-            inputElement.classList.add(inputErrorClass);
+            this._showErrorMessage(errorMassage, this._errorClass);
+            inputElement.classList.add(this._inputErrorClass);
         }
     }
 
@@ -52,22 +52,22 @@ export class FormValidator {
     }
 
     // ! this function hides the error massage
-    _hideErrorMessage(errorMassage, errorClass) {
-        errorMassage.classList.remove(errorClass);
+    _hideErrorMessage(errorMassage) {
+        errorMassage.classList.remove(this._errorClass);
     }
 
     // ! this function shows the error massage
-    _showErrorMessage(errorMassage, errorClass) {
-        errorMassage.classList.add(errorClass);
+    _showErrorMessage(errorMassage) {
+        errorMassage.classList.add(this._errorClass);
     }
 
     // ! this function handles the button state according to the form validity
-    _handleForm(submitButtonSelector, inactiveButtonClass, inputSelector) {
-        const formButton = this._form.querySelector(submitButtonSelector);
-        if (this._checkFormValidity(this._form, inputSelector)) {
-            this._toggleButtonState(formButton, inactiveButtonClass, true);
+    _handleForm() {
+        const formButton = this._form.querySelector(this._submitButtonSelector);
+        if (this._checkFormValidity(this._form, this._inputSelector)) {
+            this.toggleButtonState(formButton, true);
         } else {
-            this._toggleButtonState(formButton, inactiveButtonClass, false);
+            this.toggleButtonState(formButton, false);
         }
     }
 
@@ -77,12 +77,12 @@ export class FormValidator {
     }
 
     // ! this function toggles button state
-    _toggleButtonState(button, inactiveButtonClass, isValid) {
+    toggleButtonState(button, isValid) {
         if (isValid) {
-            button.classList.remove(inactiveButtonClass);
+            button.classList.remove(this._inactiveButtonClass);
             button.disabled = false;
         } else {
-            button.classList.add(inactiveButtonClass);
+            button.classList.add(this._inactiveButtonClass);
             button.disabled = true;
         }
     }

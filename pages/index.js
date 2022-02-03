@@ -2,18 +2,21 @@
  import { FormValidator } from "./FormValidator.js";
  import * as functions from "./utils.js"
 
+
  // ! buttons
  const editButton = document.querySelector(".profile__edit-button");
  const addButton = document.querySelector(".profile__add-button");
  // ! popup
+ const profilePopup = document.querySelector(".popup_profile");
+ const imagePopup = document.querySelector(".popup_image");
  const addPopup = document.querySelector(".popup_add");
  // ! close buttons
  const addCloseButton = document.getElementById("addCloseButton");
  const imageCloseButton = document.querySelector(".popup__close-button_image");
  const editCloseButton = document.getElementById("editCloseButton");
  // ! forms
- const editFormID = document.getElementById("editform");
- const addFormID = document.getElementById("addform");
+ const editFormElement = document.getElementById("editform");
+ const addFormElement = document.getElementById("addform");
  const settings = {
      formSelector: ".popup__form",
      inputSelector: ".popup__input",
@@ -22,8 +25,8 @@
      inputErrorClass: "popup__input_type_error",
      errorClass: "popup__error-massage_visible"
  };
- const addForm = new FormValidator(settings, addFormID);
- const editForm = new FormValidator(settings, editFormID);
+ const addFormValidator = new FormValidator(settings, addFormElement);
+ const editFormValidator = new FormValidator(settings, editFormElement);
  // ! inputs
  const nameInput = document.getElementById("popupname");
  const jobInput = document.getElementById("popupaboutme");
@@ -66,14 +69,14 @@
 
  function createCards() {
      for (let i = 0; i < cardsArray.length; i++) {
-         let card = new Card(cardsArray[i].name, cardsArray[i].link, functions.openPopup);
+         const card = new Card(cardsArray[i].name, cardsArray[i].link, functions.openPopup);
          cards.prepend(card.generateCard());
      }
  }
 
  createCards();
- addForm.enableValidation();
- editForm.enableValidation();
+ addFormValidator.enableValidation();
+ editFormValidator.enableValidation();
 
  // ! edit form handle
  function handleProfileFormSubmit(evt) {
@@ -86,7 +89,7 @@
      profileName.textContent = nameInputText;
      profileAboutMe.textContent = jobInputText;
 
-     functions.toggleEditPopupWindow();
+     toggleEditPopupWindow();
  }
 
  // ! add form handle
@@ -96,28 +99,48 @@
      const titleInputText = titleInput.value;
      const imageLinkText = imageLinkInput.value;
 
-     let card = new Card(titleInputText, imageLinkText, functions.openPopup);
+     const card = new Card(titleInputText, imageLinkText, functions.openPopup);
      cards.prepend(card.generateCard());
 
-     addFormID.reset();
-     addForm.enableValidation();
-     functions.toggleAddPopupWindow();
+     addFormElement.reset();
+     addFormValidator.toggleButtonState(addPopup.querySelector(".popup__button"), false);
+     toggleAddPopupWindow();
+ }
+
+ // * * this function toggles the popup window for the edit window 
+ function toggleEditPopupWindow() {
+     if (!profilePopup.classList.contains("popup_opened")) {
+         functions.openPopup(profilePopup);
+         nameInput.value = profileName.textContent;
+         jobInput.value = profileAboutMe.textContent;
+     } else {
+         functions.closePopup(profilePopup);
+     }
+ }
+
+ // * * this function toggles the popup window for the add window 
+ function toggleAddPopupWindow() {
+     if (!addPopup.classList.contains("popup_opened")) {
+         functions.openPopup(addPopup);
+     } else {
+         functions.closePopup(addPopup);
+     }
  }
 
  // ! calling event listeners
- addFormID.addEventListener("submit", handleAddFormSubmit);
+ addFormElement.addEventListener("submit", handleAddFormSubmit);
 
- editFormID.addEventListener("submit", handleProfileFormSubmit);
+ editFormElement.addEventListener("submit", handleProfileFormSubmit);
 
- editCloseButton.addEventListener("click", functions.toggleEditPopupWindow);
+ editCloseButton.addEventListener("click", toggleEditPopupWindow);
 
- addCloseButton.addEventListener("click", functions.toggleAddPopupWindow);
+ addCloseButton.addEventListener("click", toggleAddPopupWindow);
 
- editButton.addEventListener("click", functions.toggleEditPopupWindow);
+ editButton.addEventListener("click", toggleEditPopupWindow);
 
- addButton.addEventListener("click", functions.toggleAddPopupWindow);
+ addButton.addEventListener("click", toggleAddPopupWindow);
 
- imageCloseButton.addEventListener("click", functions.closeImagePopup);
+ imageCloseButton.addEventListener("click", functions.closePopup(imagePopup));
 
  // * * once you click your mouse on the popup overlay
  // * * this checks if you press the overlay or the popup content
