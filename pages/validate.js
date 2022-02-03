@@ -19,19 +19,18 @@ function enableValidation(settings) {
                     handleForm(inputElement.parentElement, submitButtonSelector, inactiveButtonClass, inputSelector);
                 });
             });
-            // handleForm(formElement, submitButtonSelector, inactiveButtonClass, inputSelector);
         });
     }
 }
 
-enableValidation({
-    formSelector: ".popup__form",
-    inputSelector: ".popup__input",
-    submitButtonSelector: ".popup__button",
-    inactiveButtonClass: "popup__button_invalid",
-    inputErrorClass: "popup__input_type_error",
-    errorClass: "popup__error-massage_visible"
-});
+// enableValidation({
+//     formSelector: ".popup__form",
+//     inputSelector: ".popup__input",
+//     submitButtonSelector: ".popup__button",
+//     inactiveButtonClass: "popup__button_invalid",
+//     inputErrorClass: "popup__input_type_error",
+//     errorClass: "popup__error-massage_visible"
+// });
 
 // ! this function checkes if the input is valid
 function checkInputValidity(inputElement) {
