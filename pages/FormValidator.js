@@ -28,20 +28,20 @@ export class FormValidator {
 
     // ! this function handles the error massage state according to the input validity
     _handleInputEvent(inputElement) {
-        const errorMassage = inputElement.parentElement.querySelector(`.${inputElement.id}-error`);
+        const errorMessage = inputElement.parentElement.querySelector(`.${inputElement.id}-error`);
 
         if (this._checkInputValidity(inputElement)) {
-            this._hideErrorMessage(errorMassage, this._errorClass);
+            this._hideErrorMessage(errorMessage, this._errorClass);
             inputElement.classList.remove(this._inputErrorClass);
         } else {
-            this._showErrorMessage(errorMassage, this._errorClass);
+            this._showErrorMessage(errorMessage, this._errorClass);
             inputElement.classList.add(this._inputErrorClass);
         }
     }
 
     // ! this function checkes if the form is valid
-    _checkFormValidity(formElement, inputSelector) {
-        const inputList = [...formElement.querySelectorAll(inputSelector)];
+    _checkFormValidity(formElement) {
+        const inputList = [...formElement.querySelectorAll(this._inputSelector)];
         let isValid = true;
         for (let i = 0; i < inputList.length; i++) {
             if (!this._checkInputValidity(inputList[i])) {

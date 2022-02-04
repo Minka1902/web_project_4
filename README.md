@@ -1,6 +1,7 @@
 web project 4
 Michael Scharff
 
+connected the live server. we now have a Card and FormValidator classes.
 the project is a page of social media. you can see a picture of some very beutiful views and you can like them. you can edit the profile name and about me and can add a post. you can now exit any popup by clicking the "ESC" button or just clicking with your mouse on the popup overlay. i used the grid technique with the cards and flex with everything else.
 
 there are 2 JS pages one CSS and one HTML.

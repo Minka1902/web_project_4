@@ -5,12 +5,8 @@ function openPopup(popup) { // * * takes a popup as a parameter and opens it
 }
 
 function closePopup(popup) { // * * takes a popup as a parameter and closes it
-    popup.classList.remove('popup_opened');
-    const addFormElement = document.getElementById("addform");
     document.removeEventListener("keydown", checkEscapeClicked);
-    if (popup.classList.contains("popup_add")) {
-        addFormElement.reset();
-    }
+    popup.classList.remove('popup_opened');
 }
 
 // ! Escape

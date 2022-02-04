@@ -2,7 +2,6 @@
  import { FormValidator } from "./FormValidator.js";
  import * as functions from "./utils.js"
 
-
  // ! buttons
  const editButton = document.querySelector(".profile__edit-button");
  const addButton = document.querySelector(".profile__add-button");
@@ -121,6 +120,7 @@
  // * * this function toggles the popup window for the add window 
  function toggleAddPopupWindow() {
      if (!addPopup.classList.contains("popup_opened")) {
+         addFormElement.reset();
          functions.openPopup(addPopup);
      } else {
          functions.closePopup(addPopup);
@@ -140,7 +140,7 @@
 
  addButton.addEventListener("click", toggleAddPopupWindow);
 
- imageCloseButton.addEventListener("click", functions.closePopup(imagePopup));
+ imageCloseButton.addEventListener("click", () => functions.closePopup(imagePopup));
 
  // * * once you click your mouse on the popup overlay
  // * * this checks if you press the overlay or the popup content

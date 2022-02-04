@@ -57,7 +57,7 @@ export class Card {
 
     // * * this function deletes the card
     _deleteCard() {
-        document.querySelector(".cards").removeChild(this._element);
+        this._element.remove();
     }
 
     _openImagePopup(evt) {
