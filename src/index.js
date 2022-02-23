@@ -1,18 +1,20 @@
  import { Card } from "./Card.js";
  import { FormValidator } from "./FormValidator.js";
- import * as functions from "./utils.js"
+ import "./styles/index.css";
+ import Popup from "./Popup.js";
+ import PopupWithForm from "./PopupWithForm.js";
+ import UserInfo from "./UserInfo";
+ import Section from "./Section.js";
 
+ // ! user
+ const userInfo = new UserInfo("Jacques Cousteau", "Explorer");
  // ! buttons
  const editButton = document.querySelector(".profile__edit-button");
  const addButton = document.querySelector(".profile__add-button");
  // ! popup
- const profilePopup = document.querySelector(".popup_profile");
- const imagePopup = document.querySelector(".popup_image");
- const addPopup = document.querySelector(".popup_add");
- // ! close buttons
- const addCloseButton = document.getElementById("addCloseButton");
- const imageCloseButton = document.querySelector(".popup__close-button_image");
- const editCloseButton = document.getElementById("editCloseButton");
+ const imagePopup = new Popup(".popup_image");
+ const profilePopup = new PopupWithForm(".popup_profile", handleProfileFormSubmit);
+ const addPopup = new PopupWithForm(".popup_add", handleAddFormSubmit);
  // ! forms
  const editFormElement = document.getElementById("editform");
  const addFormElement = document.getElementById("addform");
@@ -37,7 +39,6 @@
  // ! arrays
  const popupArray = document.querySelectorAll(".popup");
  const cards = document.querySelector(".cards");
-
 
  // ! initial cards
  const cardsArray = [{
@@ -67,13 +68,25 @@
  ];
 
  function createCards() {
-     for (let i = 0; i < cardsArray.length; i++) {
-         const card = new Card(cardsArray[i].name, cardsArray[i].link, functions.openPopup);
-         cards.prepend(card.generateCard());
+     for (let i = 0; i < this._items.length; i++) {
+         const card = new Card(this._items[i].name, this._items[i].link);
+         cardsSection.addItem(card.generateCard());
+         //  document.querySelector(`.${this._classSelector}`).append(element);
+
      }
  }
 
- createCards();
+ //  function createCards() {
+ //      for (let i = 0; i < cardsArray.length; i++) {
+ //          const card = new Card(cardsArray[i].name, cardsArray[i].link, functions.openPopup);
+ //          cards.prepend(card.generateCard());
+ //      }
+ //  }
+
+
+ const cardsSection = new Section({ items: cardsArray, renderer: createCards }, "cards")
+ cardsSection.render()
+
  addFormValidator.enableValidation();
  editFormValidator.enableValidation();
 
@@ -83,6 +96,8 @@
 
      const nameInputText = nameInput.value;
      const jobInputText = jobInput.value;
+     const userObj = { name: nameInputText.value, job: jobInputText.value };
+     userInfo.setUserInfo(userObj);
 
 
      profileName.textContent = nameInputText;
@@ -98,7 +113,7 @@
      const titleInputText = titleInput.value;
      const imageLinkText = imageLinkInput.value;
 
-     const card = new Card(titleInputText, imageLinkText, functions.openPopup);
+     const card = new Card(titleInputText, imageLinkText);
      cards.prepend(card.generateCard());
 
      addFormElement.reset();
@@ -108,46 +123,37 @@
 
  // * * this function toggles the popup window for the edit window 
  function toggleEditPopupWindow() {
-     if (!profilePopup.classList.contains("popup_opened")) {
-         functions.openPopup(profilePopup);
+     if (!profilePopup.contains("popup_opened")) {
+         profilePopup.open();
          nameInput.value = profileName.textContent;
          jobInput.value = profileAboutMe.textContent;
      } else {
-         functions.closePopup(profilePopup);
+         profilePopup.close();
      }
  }
 
  // * * this function toggles the popup window for the add window 
  function toggleAddPopupWindow() {
-     if (!addPopup.classList.contains("popup_opened")) {
+     if (!addPopup.contains("popup_opened")) {
          addFormElement.reset();
-         functions.openPopup(addPopup);
+         addPopup.open();
      } else {
-         functions.closePopup(addPopup);
+         addPopup.close();
      }
  }
 
  // ! calling event listeners
- addFormElement.addEventListener("submit", handleAddFormSubmit);
-
- editFormElement.addEventListener("submit", handleProfileFormSubmit);
-
- editCloseButton.addEventListener("click", toggleEditPopupWindow);
-
- addCloseButton.addEventListener("click", toggleAddPopupWindow);
-
- editButton.addEventListener("click", toggleEditPopupWindow);
-
  addButton.addEventListener("click", toggleAddPopupWindow);
 
- imageCloseButton.addEventListener("click", () => functions.closePopup(imagePopup));
+ editButton.addEventListener("click", toggleEditPopupWindow);
 
  // * * once you click your mouse on the popup overlay
  // * * this checks if you press the overlay or the popup content
  popupArray.forEach((popupElement) => {
      popupElement.addEventListener("mousedown", function(evt) {
-         if (evt.target.classList.contains("popup")) {
-             functions.closePopup(popupElement);
+         const popupToClose = new Popup(`.${document.querySelector(".popup_opened").classList[1]}`);
+         if (evt.target.classList.contains("popup_opened")) {
+             popupToClose.close();
          }
      });
  });

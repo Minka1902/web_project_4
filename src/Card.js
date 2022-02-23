@@ -1,9 +1,11 @@
+import popupWithImage from "./PopupWithImage.js";
+
 export class Card {
-    constructor(name, link, openPopup) {
+    constructor(name, link) {
         this._name = name;
         this._link = link;
-        this._openPopup = openPopup;
         this._element = this._getTemplate();
+
     }
 
     // * * this function generates the card 
@@ -16,11 +18,12 @@ export class Card {
 
     // * * this function sets all the info of the card
     _setCard() {
+
         const card = this._element;
         const cardImage = card.querySelector(".card__image");
         card.querySelector(".card__text").textContent = this._name;
         cardImage.src = this._link;
-        cardImage.alt = `A view of ${this._name}`;
+        cardImage.alt = `A view of ${ this._name }`;
         return card;
     }
 
@@ -46,7 +49,8 @@ export class Card {
         });
 
         this._element.querySelector(".card__image").addEventListener("click", (evt) => {
-            this._openImagePopup(evt);
+            const popupWithImag = new popupWithImage(".popup_image", this._link, this._name);
+            popupWithImag.open();
         });
     }
 
@@ -58,12 +62,5 @@ export class Card {
     // * * this function deletes the card
     _deleteCard() {
         this._element.remove();
-    }
-
-    _openImagePopup(evt) {
-        document.querySelector(".popup__image").setAttribute("src", evt.currentTarget.src);
-        document.querySelector(".popup__image").setAttribute("alt", evt.currentTarget.alt);
-        document.querySelector(".popup__text").textContent = evt.currentTarget.parentElement.textContent;
-        this._openPopup(document.querySelector(".popup_image"));
     }
 };
