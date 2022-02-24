@@ -2,11 +2,10 @@ export default class UserInfo {
     constructor({ name, job }) {
         this._job = job;
         this._name = name;
-        this._element = { name, job };
     }
 
     getUserInfo() {
-        return this._element;
+        return { name: this._name, job: this._job };
     }
 
     setUserInfo(obj) {

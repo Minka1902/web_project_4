@@ -11,22 +11,17 @@ export default class Popup {
 
     open() {
         this._isOpen = true;
+        document.addEventListener("keydown", this._handleEscClose);
         this._element.classList.add("popup_opened");
     }
 
-    close() {
+    close = () => {
         this._isOpen = false;
-        // check if this is popup (or close-button clicked) 
-        if (this._element) {
-            this._element.classList.remove("popup_opened");
-        } else {
-            // get the popup parent
-            this.parentElement.parentElement.classList.remove("popup_opened");
-        }
+        this._element.classList.remove("popup_opened");
         document.removeEventListener("keydown", this._handleEscClose);
     }
 
-    contains(className) {
+    classContains(className) {
         if (this._element.classList.contains(className)) {
             return true;
         }
@@ -37,17 +32,19 @@ export default class Popup {
         return this._element.querySelector(className);
     }
 
-    _handleEscClose(evt) {
+    _handleEscClose = () => {
         if (evt.code == "Escape") {
             this.close();
         }
     }
 
-    setEventListeners() {
-        document.addEventListener("keydown", (evt) => { this._handleEscClose(evt) });
+    setEventListeners = () => {
         this._element.querySelector(".popup__close-button").addEventListener("click", this.close);
-        document.addEventListener("keydown", (evt) => {
-            this._handleEscClose(evt);
+
+        this._element.addEventListener("mousedown", function(evt) {
+            if (evt.target.classList.contains("popup_opened")) {
+                this.classList.remove("popup_opened");
+            }
         });
     }
 }

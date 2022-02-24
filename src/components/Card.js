@@ -1,24 +1,30 @@
-import popupWithImage from "./PopupWithImage.js";
+import PopupWithImage from "./PopupWithImage.js";
 
-export class Card {
+export default class Card {
     constructor(name, link) {
         this._name = name;
         this._link = link;
-        this._element = this._getTemplate();
-
     }
 
     // * * this function generates the card 
-    generateCard() {
-        this._setEventListeners();
-        this._setCard();
-
+    generateCard(imageClickHandler) {
+        this._createCard();
+        this._setEventListeners(imageClickHandler);
         return this._element;
     }
 
-    // * * this function sets all the info of the card
-    _setCard() {
+    _imageClickHandler = () => {
+        const imagePopup = document.querySelector(".popup_image");
+        imagePopup.classList.add("popup_opened");
+        const image = imagePopup.querySelector(".popup__image");
+        image.setAttribute("src", this._link);
+        image.setAttribute("alt", this._name);
+        imagePopup.querySelector(".popup__text").textContent = this._name;
+    }
 
+    // * * this function sets all the info of the card
+    _createCard() {
+        this._element = this._getTemplate();
         const card = this._element;
         const cardImage = card.querySelector(".card__image");
         card.querySelector(".card__text").textContent = this._name;
@@ -39,7 +45,7 @@ export class Card {
     }
 
     // * * this function creates all the event listeners
-    _setEventListeners() {
+    _setEventListeners(imageClickHandler) {
         this._element.querySelector(".card__like-button").addEventListener("click", () => {
             this._toggleLikeButton();
         });
@@ -48,10 +54,7 @@ export class Card {
             this._deleteCard();
         });
 
-        this._element.querySelector(".card__image").addEventListener("click", (evt) => {
-            const popupWithImag = new popupWithImage(".popup_image", this._link, this._name);
-            popupWithImag.open();
-        });
+        this._element.querySelector(".card__image").addEventListener("click", this._imageClickHandler);
     }
 
     // * * this function toggles likes for the cards

@@ -1,4 +1,4 @@
-export class FormValidator {
+export default class FormValidator {
     constructor(settings, formToValidate) {
         this._form = formToValidate;
         this._setSettings(settings);
@@ -20,7 +20,7 @@ export class FormValidator {
             inputs.forEach((inputElement) => {
                 inputElement.addEventListener("input", (evt) => {
                     this._handleInputEvent(evt.target, this._inputErrorClass, this._errorClass);
-                    this._handleForm();
+                    this._buttonValidator();
                 });
             });
         }
@@ -41,28 +41,27 @@ export class FormValidator {
 
     // ! this function checkes if the form is valid
     _checkFormValidity(formElement) {
-        const inputList = [...formElement.querySelectorAll(this._inputSelector)];
-        let isValid = true;
-        for (let i = 0; i < inputList.length; i++) {
-            if (!this._checkInputValidity(inputList[i])) {
-                isValid = false;
+            const inputList = [...formElement.querySelectorAll(this._inputSelector)];
+            let isValid = true;
+            for (let i = 0; i < inputList.length; i++) {
+                if (!this._checkInputValidity(inputList[i])) {
+                    isValid = false;
+                }
             }
+            return isValid;
         }
-        return isValid;
-    }
-
-    // ! this function hides the error massage
-    _hideErrorMessage(errorMassage) {
-        errorMassage.classList.remove(this._errorClass);
+        // ! this function hides the error massage
+    _hideErrorMessage(errorMessage) {
+        errorMessage.classList.remove(this._errorClass);
     }
 
     // ! this function shows the error massage
-    _showErrorMessage(errorMassage) {
-        errorMassage.classList.add(this._errorClass);
+    _showErrorMessage(errorMessage) {
+        errorMessage.classList.add(this._errorClass);
     }
 
     // ! this function handles the button state according to the form validity
-    _handleForm() {
+    _buttonValidator() {
         const formButton = this._form.querySelector(this._submitButtonSelector);
         if (this._checkFormValidity(this._form, this._inputSelector)) {
             this.toggleButtonState(formButton, true);
