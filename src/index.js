@@ -1,19 +1,16 @@
  import Card from "./components/Card";
  import FormValidator from "./components/FormValidator";
  import "./styles/index.css";
- import Popup from "./components/Popup";
  import PopupWithForm from "./components/PopupWithForm";
  import UserInfo from "./components/UserInfo";
  import Section from "./components/Section";
 
  // ! user
- const userInfo = new UserInfo({ name: "Jacques Cousteau", job: "Explorer" });
+ const userInfo = new UserInfo({ name: ".profile__name", job: ".profile__about-me" });
  // ! buttons
  const editButton = document.querySelector(".profile__edit-button");
  const addButton = document.querySelector(".profile__add-button");
  // ! popup
- const imagePopup = new Popup(".popup_image");
- imagePopup.setEventListeners();
  const profilePopup = new PopupWithForm(".popup_profile", handleProfileFormSubmit);
  profilePopup.setEventListeners();
  const addPopup = new PopupWithForm(".popup_add", handleAddFormSubmit);
@@ -39,10 +36,6 @@
  const profileAboutMe = document.getElementById("profiledescription");
  const titleInput = document.getElementById("title");
  const imageLinkInput = document.getElementById("imagelink");
- // ! arrays
- const popupArray = document.querySelectorAll(".popup");
- const cards = document.querySelector(".cards");
-
  // ! initial cards
  const cardsArray = [{
          name: "Yosemite Valley",
@@ -69,15 +62,18 @@
          link: "https://code.s3.yandex.net/web-code/lago.jpg"
      }
  ];
+ //  ! section
+ const cardsSection = new Section({ items: cardsArray, renderer: createCard }, ".cards")
 
- function createCards() {
-     for (let i = 0; i < this._items.length; i++) {
-         const card = new Card(this._items[i].name, this._items[i].link);
-         cardsSection.addItem(card.generateCard());
-     }
+ function createCard(cardObj) {
+     const card = new Card(cardObj.name, cardObj.link, handleImageClick);
+     return card.generateCard();
  }
 
- const cardsSection = new Section({ items: cardsArray, renderer: createCards }, "cards")
+ function handleImageClick() {
+     imagePopup.open();
+ }
+
  cardsSection.render()
 
  addFormValidator.enableValidation();
@@ -98,14 +94,6 @@
      toggleEditPopupWindow();
  }
 
- function imageClickHandler(evt) {
-     imagePopup.open();
-     const image = imagePopup.querySelector(".popup__image");
-     image.setAttribute("src", evt.target);
-     image.setAttribute("alt", this._name);
-     imagePopup.querySelector(".popup__text").textContent = this._name;
- }
-
  // ! add form handle
  function handleAddFormSubmit(evt) {
      evt.preventDefault();
@@ -113,17 +101,16 @@
      const titleInputText = titleInput.value;
      const imageLinkText = imageLinkInput.value;
 
-     const card = new Card(titleInputText, imageLinkText);
-     cardsSection.addItem(card.generateCard());
+     cardsSection.addItem({ name: titleInputText, link: imageLinkText });
 
      addFormElement.reset();
-     addFormValidator.enableValidation();
+     addFormValidator.resetValidation()
      toggleAddPopupWindow();
  }
 
  // * * this function toggles the popup window for the edit window 
  function toggleEditPopupWindow() {
-     if (!profilePopup.classContains("popup_opened")) {
+     if (!profilePopup.checkIfOpened()) {
          profilePopup.open();
          const { name, job } = userInfo.getUserInfo()
          nameInput.value = name;
@@ -135,8 +122,7 @@
 
  // * * this function toggles the popup window for the add window 
  function toggleAddPopupWindow() {
-     if (!addPopup.classContains("popup_opened")) {
-         addFormElement.reset();
+     if (!addPopup.checkIfOpened()) {
          addPopup.open();
      } else {
          addPopup.close();

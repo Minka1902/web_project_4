@@ -1,25 +1,17 @@
-import PopupWithImage from "./PopupWithImage.js";
+import PopupWithImage from "./PopupWithImage";
 
 export default class Card {
-    constructor(name, link) {
+    constructor(name, link, handleImageClick) {
         this._name = name;
         this._link = link;
+        this._handleImageClick = handleImageClick;
     }
 
     // * * this function generates the card 
-    generateCard(imageClickHandler) {
+    generateCard() {
         this._createCard();
-        this._setEventListeners(imageClickHandler);
+        this._setEventListeners();
         return this._element;
-    }
-
-    _imageClickHandler = () => {
-        const imagePopup = document.querySelector(".popup_image");
-        imagePopup.classList.add("popup_opened");
-        const image = imagePopup.querySelector(".popup__image");
-        image.setAttribute("src", this._link);
-        image.setAttribute("alt", this._name);
-        imagePopup.querySelector(".popup__text").textContent = this._name;
     }
 
     // * * this function sets all the info of the card
@@ -45,7 +37,7 @@ export default class Card {
     }
 
     // * * this function creates all the event listeners
-    _setEventListeners(imageClickHandler) {
+    _setEventListeners = () => {
         this._element.querySelector(".card__like-button").addEventListener("click", () => {
             this._toggleLikeButton();
         });
@@ -54,7 +46,9 @@ export default class Card {
             this._deleteCard();
         });
 
-        this._element.querySelector(".card__image").addEventListener("click", this._imageClickHandler);
+        const imagePopup = new PopupWithImage(".popup_image", this._link, this._name);
+        imagePopup.setEventListeners();
+        this._element.querySelector(".card__image").addEventListener("click", imagePopup.open);
     }
 
     // * * this function toggles likes for the cards
