@@ -1,9 +1,10 @@
- import Card from "./components/Card";
- import FormValidator from "./components/FormValidator";
- import "./styles/index.css";
- import PopupWithForm from "./components/PopupWithForm";
- import UserInfo from "./components/UserInfo";
- import Section from "./components/Section";
+ import Card from "../components/Card";
+ import FormValidator from "../components/FormValidator";
+ import "./index.css";
+ import PopupWithImage from "../components/PopupWithImage";
+ import PopupWithForm from "../components/PopupWithForm";
+ import UserInfo from "../components/UserInfo";
+ import Section from "../components/Section";
 
  // ! user
  const userInfo = new UserInfo({ name: ".profile__name", job: ".profile__about-me" });
@@ -15,6 +16,8 @@
  profilePopup.setEventListeners();
  const addPopup = new PopupWithForm(".popup_add", handleAddFormSubmit);
  addPopup.setEventListeners();
+ const imagePopup = new PopupWithImage(".popup_image");
+ imagePopup.setEventListeners();
  // ! forms
  const editFormElement = document.getElementById("editform");
  const addFormElement = document.getElementById("addform");
@@ -70,7 +73,8 @@
      return card.generateCard();
  }
 
- function handleImageClick() {
+ function handleImageClick({ url, caption }) {
+     imagePopup.setImage({ url, caption });
      imagePopup.open();
  }
 
@@ -85,11 +89,8 @@
 
      const nameInputText = nameInput.value;
      const jobInputText = jobInput.value;
-     const userObj = { name: nameInputText.value, job: jobInputText.value };
+     const userObj = { name: nameInputText, job: jobInputText };
      userInfo.setUserInfo(userObj);
-
-     profileName.textContent = nameInputText;
-     profileAboutMe.textContent = jobInputText;
 
      toggleEditPopupWindow();
  }
@@ -102,9 +103,6 @@
      const imageLinkText = imageLinkInput.value;
 
      cardsSection.addItem({ name: titleInputText, link: imageLinkText });
-
-     addFormElement.reset();
-     addFormValidator.resetValidation()
      toggleAddPopupWindow();
  }
 
@@ -126,6 +124,7 @@
          addPopup.open();
      } else {
          addPopup.close();
+         addFormElement.reset();
      }
  }
 

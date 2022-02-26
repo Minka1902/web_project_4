@@ -20,14 +20,10 @@ export default class FormValidator {
             inputs.forEach((inputElement) => {
                 inputElement.addEventListener("input", (evt) => {
                     this._handleInputEvent(evt.target, this._inputErrorClass, this._errorClass);
-                    this._validateButton();
+                    this.validateButton();
                 });
             });
         }
-    }
-
-    resetValidation() {
-        this._validateButton();
     }
 
     // ! this function handles the error massage state according to the input validity
@@ -65,7 +61,7 @@ export default class FormValidator {
     }
 
     // ! this function handles the button state according to the form validity
-    _validateButton() {
+    validateButton() {
         const formButton = this._form.querySelector(this._submitButtonSelector);
         if (this._checkFormValidity(this._form, this._inputSelector)) {
             this.toggleButtonState(formButton, true);

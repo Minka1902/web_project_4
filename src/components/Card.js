@@ -46,9 +46,9 @@ export default class Card {
             this._deleteCard();
         });
 
-        const imagePopup = new PopupWithImage(".popup_image", this._link, this._name);
-        imagePopup.setEventListeners();
-        this._element.querySelector(".card__image").addEventListener("click", imagePopup.open);
+        this._element.querySelector(".card__image").addEventListener("click", () => {
+            this._handleImageClick({ url: this._link, caption: this._name })
+        });
     }
 
     // * * this function toggles likes for the cards

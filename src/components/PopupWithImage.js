@@ -8,6 +8,11 @@ export default class PopupWithImage extends Popup {
         this._image = this.getElement().querySelector(".popup__image");
     }
 
+    setImage({ caption, url }) {
+        this._url = url;
+        this._caption = caption;
+    }
+
     open = () => {
         super.open();
         this._image.setAttribute("src", this._url);
