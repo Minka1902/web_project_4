@@ -35,8 +35,6 @@
  const nameInput = document.getElementById("popupname");
  const jobInput = document.getElementById("popupaboutme");
  // !input help
- const profileName = document.getElementById("profilename");
- const profileAboutMe = document.getElementById("profiledescription");
  const titleInput = document.getElementById("title");
  const imageLinkInput = document.getElementById("imagelink");
  // ! initial cards
@@ -102,6 +100,7 @@
      const titleInputText = titleInput.value;
      const imageLinkText = imageLinkInput.value;
 
+     addFormValidator.toggleButtonState(addFormElement.querySelector(".popup__button"), false);
      cardsSection.addItem({ name: titleInputText, link: imageLinkText });
      toggleAddPopupWindow();
  }

@@ -47,7 +47,7 @@ export default class Card {
         });
 
         this._element.querySelector(".card__image").addEventListener("click", () => {
-            this._handleImageClick({ url: this._link, caption: this._name })
+            this._handleImageClick({ url: this._link, caption: this._name });
         });
     }
 
