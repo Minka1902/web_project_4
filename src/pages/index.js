@@ -1,133 +1,44 @@
- import Card from "../components/Card";
- import FormValidator from "../components/FormValidator";
  import "./index.css";
- import PopupWithImage from "../components/PopupWithImage";
- import PopupWithForm from "../components/PopupWithForm";
- import UserInfo from "../components/UserInfo";
- import Section from "../components/Section";
+ import * as consts from "../utils/constants";
 
- // ! user
- const userInfo = new UserInfo({ name: ".profile__name", job: ".profile__about-me" });
- // ! buttons
- const editButton = document.querySelector(".profile__edit-button");
- const addButton = document.querySelector(".profile__add-button");
- // ! popup
- const profilePopup = new PopupWithForm(".popup_profile", handleProfileFormSubmit);
- profilePopup.setEventListeners();
- const addPopup = new PopupWithForm(".popup_add", handleAddFormSubmit);
- addPopup.setEventListeners();
- const imagePopup = new PopupWithImage(".popup_image");
- imagePopup.setEventListeners();
- // ! forms
- const editFormElement = document.getElementById("editform");
- const addFormElement = document.getElementById("addform");
- const settings = {
-     formSelector: ".popup__form",
-     inputSelector: ".popup__input",
-     submitButtonSelector: ".popup__button",
-     inactiveButtonClass: "popup__button_invalid",
-     inputErrorClass: "popup__input_type_error",
-     errorClass: "popup__error-massage_visible"
- };
- const addFormValidator = new FormValidator(settings, addFormElement);
- const editFormValidator = new FormValidator(settings, editFormElement);
- // ! inputs
- const nameInput = document.getElementById("popupname");
- const jobInput = document.getElementById("popupaboutme");
- // !input help
- const titleInput = document.getElementById("title");
- const imageLinkInput = document.getElementById("imagelink");
- // ! initial cards
- const cardsArray = [{
-         name: "Yosemite Valley",
-         link: "https://code.s3.yandex.net/web-code/yosemite.jpg"
-     },
-     {
-         name: "Lake Louise",
-         link: "https://code.s3.yandex.net/web-code/lake-louise.jpg"
-     },
-     {
-         name: "Bald Mountains",
-         link: "https://code.s3.yandex.net/web-code/bald-mountains.jpg"
-     },
-     {
-         name: "Latemar",
-         link: "https://code.s3.yandex.net/web-code/latemar.jpg"
-     },
-     {
-         name: "Vanoise National Park",
-         link: "https://code.s3.yandex.net/web-code/vanoise.jpg"
-     },
-     {
-         name: "Lago di Braies",
-         link: "https://code.s3.yandex.net/web-code/lago.jpg"
-     }
- ];
- //  ! section
- const cardsSection = new Section({ items: cardsArray, renderer: createCard }, ".cards")
+ consts.profilePopup.setEventListeners();
+ consts.confirmPopup.setEventListeners();
+ consts.addPopup.setEventListeners();
+ consts.avatarPopup.setEventListeners();
+ consts.imagePopup.setEventListeners();
 
- function createCard(cardObj) {
-     const card = new Card(cardObj.name, cardObj.link, handleImageClick);
-     return card.generateCard();
- }
-
- function handleImageClick({ url, caption }) {
-     imagePopup.setImage({ url, caption });
-     imagePopup.open();
- }
-
- cardsSection.render()
-
- addFormValidator.enableValidation();
- editFormValidator.enableValidation();
-
- // ! edit form handle
- function handleProfileFormSubmit(evt) {
-     evt.preventDefault();
-
-     const nameInputText = nameInput.value;
-     const jobInputText = jobInput.value;
-     const userObj = { name: nameInputText, job: jobInputText };
-     userInfo.setUserInfo(userObj);
-
-     toggleEditPopupWindow();
- }
-
- // ! add form handle
- function handleAddFormSubmit(evt) {
-     evt.preventDefault();
-
-     const titleInputText = titleInput.value;
-     const imageLinkText = imageLinkInput.value;
-
-     addFormValidator.toggleButtonState(addFormElement.querySelector(".popup__button"), false);
-     cardsSection.addItem({ name: titleInputText, link: imageLinkText });
-     toggleAddPopupWindow();
- }
-
- // * * this function toggles the popup window for the edit window 
- function toggleEditPopupWindow() {
-     if (!profilePopup.checkIfOpened()) {
-         profilePopup.open();
-         const { name, job } = userInfo.getUserInfo()
-         nameInput.value = name;
-         jobInput.value = job;
-     } else {
-         profilePopup.close();
-     }
- }
-
- // * * this function toggles the popup window for the add window 
- function toggleAddPopupWindow() {
-     if (!addPopup.checkIfOpened()) {
-         addPopup.open();
-     } else {
-         addPopup.close();
-         addFormElement.reset();
-     }
- }
+ consts.avatarFormValidator.enableValidation();
+ consts.addFormValidator.enableValidation();
+ consts.editFormValidator.enableValidation();
 
  // ! calling event listeners
- addButton.addEventListener("click", toggleAddPopupWindow);
+ consts.addButton.addEventListener("click", consts.toggleAddPopupWindow);
 
- editButton.addEventListener("click", toggleEditPopupWindow);
+ consts.editButton.addEventListener("click", consts.toggleEditPopupWindow);
+
+ consts.avatarButton.addEventListener("click", consts.toggleAvatarPopupWindow);
+
+ Promise.all([consts.api.getUserInfo(), consts.api.getInitialCards()])
+     .then(([userData, fCards]) => {
+         const userObject = {};
+         consts.userInfo.createMe(userData);
+         userObject.name = userData.name;
+         userObject.about = userData.about;
+         userObject.avatar = userData.avatar;
+         consts.userInfo.setUserInfo(userObject);
+
+         for (let i = 0; i < fCards.length; i++) {
+             const len = fCards.length - 1;
+             const cardObj = {
+                 name: fCards[len - i].name,
+                 link: fCards[len - i].link,
+                 id: fCards[len - i]._id,
+                 likes: fCards[len - i].likes,
+                 owner: fCards[len - i].owner
+             };
+             consts.cardsData[i] = cardObj;
+         }
+         consts.cardsSection.render();
+     }).catch((err) => {
+         console.log(err);
+     });
