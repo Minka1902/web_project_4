@@ -24,7 +24,7 @@ export default class Popup {
 
     _handleEscClose = (evt) => {
         if (evt.code == "Escape") {
-            this.close(this._element.classList[1]);
+            this.close();
         }
     }
 
@@ -34,12 +34,12 @@ export default class Popup {
 
     setEventListeners() {
         this._element.querySelector(".popup__close-button").addEventListener("click", (evt) => {
-            this.close(evt.target.closest(".popup").classList[1]);
+            this.close();
         });
 
         this._element.addEventListener("mousedown", (evt) => {
             if (evt.target.classList.contains("popup_opened")) {
-                this.close(evt.target.classList[1]);
+                this.close();
             }
         });
     }
