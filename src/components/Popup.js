@@ -10,11 +10,10 @@ export default class Popup {
         this._element.classList.add("popup_opened");
     }
 
-    close(popupSelector) {
+    close() {
         this._isOpen = false;
-        const element = document.querySelector(`.${popupSelector}`);
-        if (element) {
-            element.classList.remove("popup_opened");
+        if (this._element) {
+            this._element.classList.remove("popup_opened");
         }
         document.removeEventListener("keydown", this._handleEscClose);
     }

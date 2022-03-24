@@ -1,9 +1,10 @@
 export default class Card {
-    constructor(name, link, cardId, likes, handleImageClick, confirmPopup, owner, user) {
+    constructor(cardTemplate, name, link, cardId, likes, handleImageClick, confirmPopup, owner, user) {
+        this._cardTemplate = cardTemplate;
         this._name = name;
         this._link = link;
-        this._likes = likes;
         this._cardId = cardId;
+        this._likes = likes;
         this._handleImageClick = handleImageClick;
         this._confirmPopup = confirmPopup;
         this._owner = owner;
@@ -38,7 +39,7 @@ export default class Card {
     // * * this function creates the card template
     _getTemplate() {
         const cardElement = document
-            .querySelector("#cardtemplate")
+            .querySelector(this._cardTemplate)
             .content
             .querySelector(".card")
             .cloneNode(true);
@@ -61,30 +62,15 @@ export default class Card {
     handleClick = (api) => {
         if (this._owner._id === this._user.id) {
             this._deleteCard();
-            if (!this._cardId) {
-                api.getCardId()
-                    .then((data) => {
-                        this._cardId = data[0]._id;
-                        api.deleteCard(this._cardId)
-                            .then(() => {
-                                this._confirmPopup.close(".popup_confirm");
-                            }).finally(() => {
-                                this._confirmPopup.querySelector(".popup__button").textContent = "Yes";
-                            }).catch((err) => {
-                                console.log(err);
-                            });
-                    });
-            } else {
-                api.deleteCard(this._cardId)
-                    .then(() => {
-                        this._confirmPopup.close(".popup_confirm");
-                    }).finally(() => {
-                        this._confirmPopup.querySelector(".popup__button").textContent = "Yes";
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            }
+            api.deleteCard(this._cardId)
+                .then(() => {
+                    this._confirmPopup.close();
+                }).finally(() => {
+                    this._confirmPopup.querySelector(".popup__button").textContent = "Yes";
+                }).catch((err) => {
+                    console.log(err);
+                });
+
             this._confirmPopup.querySelector(".popup__button").textContent = "Deleting..."
         }
     }
@@ -94,7 +80,7 @@ export default class Card {
         this._likeButton = this._element.querySelector(".card__like-button");
         this._likeButton.addEventListener("click", () => {
             if (!this._likeButton.classList.contains("info__card_like-button_state_active")) {
-                this._justLiked = true;
+                this._justClicked = true;
             }
             this._checkLikes(api);
         });
@@ -120,41 +106,26 @@ export default class Card {
 
     // * * this function toggles likes for the cards
     _checkLikes(api) {
-        if (this._justLiked) {
+        if (this._justClicked) {
             if (this._likes) {
                 this._likes[this._likes.length] = this._user;
             }
-            if (this._cardId) {
-                api.addLike(this._cardId)
-                    .then(() => {
-                        this._likeNumber.textContent = this.getLikeNumber();
-                        this._likeButton.classList.add("info__card_like-button_state_active");
-                    });
-            } else {
-                api.getCardId()
-                    .then((data) => {
-                        this._cardId = data[0]._id;
-                        api.addLike(this._cardId)
-                            .then(() => {
-                                this._likeNumber.textContent = this.getLikeNumber();
-                                this._likeButton.classList.add("info__card_like-button_state_active");
-                            });
-                    }).catch((err) => {
-                        console.log(err);
-                    });
-            }
-            this._justLiked = false;
+            api.addLike(this._cardId)
+                .then(() => {
+                    this._likeNumber.textContent = this.getLikeNumber();
+                    this._likeButton.classList.add("info__card_like-button_state_active");
+                });
+            this._justClicked = false;
         } else {
-            this._likes.pop();
-            if (this._cardId) {
-                api.removeLike(this._cardId)
-                    .then(() => {
-                        this._likeNumber.textContent = this.getLikeNumber();
-                        this._likeButton.classList.remove("info__card_like-button_state_active");
-                    }).catch((err) => {
-                        console.log(err);
-                    });
-            }
+            api.removeLike(this._cardId)
+                .then((data) => {
+                    this._likes = data.likes;
+                    this._likeNumber.textContent = this.getLikeNumber();
+                    this._likeButton.classList.remove("info__card_like-button_state_active");
+                }).catch((err) => {
+                    console.log(err);
+                });
+
         }
         this._setCardLikes();
     }

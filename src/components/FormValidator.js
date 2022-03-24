@@ -42,10 +42,9 @@ export default class FormValidator {
 
     // ! this function checkes if the form is valid
     _checkFormValidity() {
-            const inputList = [...this._form.querySelectorAll(this._inputSelector)];
             let isValid = true;
-            for (let i = 0; i < inputList.length; i++) {
-                if (!this._checkInputValidity(inputList[i])) {
+            for (let i = 0; i < this._inputs.length; i++) {
+                if (!this._checkInputValidity(this._inputs[i])) {
                     isValid = false;
                 }
             }

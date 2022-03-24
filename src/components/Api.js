@@ -64,18 +64,6 @@ export default class Api {
         })
     }
 
-    getCardId() {
-        return fetch(`${this._baseUrl}/cards`, {
-                method: "GET",
-                headers: {
-                    authorization: this._headers.authorization
-                }
-            })
-            .then((res) => {
-                return this._checkResponse(res);
-            })
-    }
-
     addCard(titleInput, imageLinkInput) {
         return fetch(`${this._baseUrl}/cards`, {
                 method: "POST",

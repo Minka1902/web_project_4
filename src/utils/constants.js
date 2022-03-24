@@ -58,15 +58,15 @@ const apiOptions = {
 }
 export const api = new Api(apiOptions);
 
-// ! initial cards
-export const cardsData = [];
-
 // ! section
+export const cardsData = [];
 export const cardsSection = new Section({ items: cardsData, renderer: createCard }, ".cards", api);
 
 // ! create cards
 function createCard(cardObj, api) {
-    const card = new Card(cardObj.name,
+    const card = new Card(
+        "#cardtemplate",
+        cardObj.name,
         cardObj.link,
         cardObj.id,
         cardObj.likes,
@@ -87,7 +87,7 @@ export function toggleEditPopupWindow() {
         nameInput.value = name;
         jobInput.value = job;
     } else {
-        profilePopup.close("popup_profile");
+        profilePopup.close();
     }
 }
 
@@ -114,7 +114,7 @@ export function toggleAddPopupWindow() {
     if (!addPopup.checkIfOpened()) {
         addPopup.open();
     } else {
-        addPopup.close("popup_add");
+        addPopup.close(true);
     }
 }
 
@@ -124,6 +124,16 @@ export function handleAddFormSubmit(evt) {
     evt.preventDefault();
 
     api.addCard(titleInput, imageLinkInput)
+        .then((data) => {
+            cardsSection.addItem({
+                name: titleInput.value,
+                link: imageLinkInput.value,
+                likes: [],
+                owner: userInfo.getMe(),
+                id: data._id
+            });
+            addFormElement.reset();
+        })
         .finally(() => {
             addPopup.querySelector(".popup__button").textContent = "Save";
         }).catch((err) => {
@@ -131,13 +141,6 @@ export function handleAddFormSubmit(evt) {
         });
 
     addFormValidator.toggleButtonState(false);
-    cardsSection.addItem({
-        name: titleInput.value,
-        link: imageLinkInput.value,
-        likes: [],
-        owner: userInfo.getMe()
-    });
-
     toggleAddPopupWindow();
 }
 
@@ -147,7 +150,7 @@ export function toggleAvatarPopupWindow() {
     if (!avatarPopup.checkIfOpened()) {
         avatarPopup.open();
     } else {
-        avatarPopup.close("popup_avatar");
+        avatarPopup.close();
     }
 }
 

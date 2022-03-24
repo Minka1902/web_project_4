@@ -9,9 +9,11 @@ export default class PopupWithForm extends Popup {
         this._button = this._element.querySelector(".popup__button");
     }
 
-    close(popupSelector) {
-        super.close(popupSelector);
-        this._form.reset();
+    close(isAdded) {
+        super.close();
+        if (!isAdded) {
+            this._form.reset();
+        }
     }
 
     setEventListeners() {
