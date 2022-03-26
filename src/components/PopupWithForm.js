@@ -1,3 +1,4 @@
+import { Input } from "postcss";
 import Popup from "./Popup"
 
 export default class PopupWithForm extends Popup {
@@ -9,11 +10,18 @@ export default class PopupWithForm extends Popup {
         this._button = this._element.querySelector(".popup__button");
     }
 
-    close(isAdded) {
-        super.close();
-        if (!isAdded) {
-            this._form.reset();
+    getInputValues() {
+        const formValues = {};
+        for (let i = 0; i < this._inputs.length; i++) {
+            formValues[this._inputs[i].name] = this._inputs[i].value;
         }
+
+        return formValues;
+    }
+
+    close() {
+        this._form.reset();
+        super.close();
     }
 
     setEventListeners() {

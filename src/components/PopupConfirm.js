@@ -11,11 +11,19 @@ export default class PopupConfirm extends Popup {
         super.open();
         this._api = api;
         this._handleClick = handleClick;
-        this._button.addEventListener("click", () => { this._handleClick(this._api) });
+        this._button.addEventListener("click", this._handleButtonClick);
+    }
+
+    _handleButtonClick = () => {
+        this._button.textContent = "Deleting..."
+        this._handleClick(this._api)
+            .finally(() => {
+                this._button.textContent = "Yes"
+            });
     }
 
     close() {
         super.close();
-        this._button.removeEventListener("click", () => { this._handleClick(this._api) });
+        this._button.removeEventListener("click", this._handleButtonClick);
     }
 }

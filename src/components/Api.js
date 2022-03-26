@@ -64,7 +64,7 @@ export default class Api {
         })
     }
 
-    addCard(titleInput, imageLinkInput) {
+    addCard(title, imageLink) {
         return fetch(`${this._baseUrl}/cards`, {
                 method: "POST",
                 headers: {
@@ -72,8 +72,8 @@ export default class Api {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    name: titleInput.value,
-                    link: imageLinkInput.value,
+                    name: title,
+                    link: imageLink
                 }),
             })
             .then((res) => {
@@ -93,7 +93,7 @@ export default class Api {
             })
     }
 
-    changeAvatar(avatarUrlInput) {
+    changeAvatar(newAvatarSrc) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
                 method: "PATCH",
                 headers: {
@@ -101,7 +101,7 @@ export default class Api {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    avatar: avatarUrlInput.value,
+                    avatar: newAvatarSrc,
                 })
             })
             .then((res) => {

@@ -61,17 +61,13 @@ export default class Card {
 
     handleClick = (api) => {
         if (this._owner._id === this._user.id) {
-            this._deleteCard();
-            api.deleteCard(this._cardId)
+            return api.deleteCard(this._cardId)
                 .then(() => {
                     this._confirmPopup.close();
-                }).finally(() => {
-                    this._confirmPopup.querySelector(".popup__button").textContent = "Yes";
+                    this._deleteCard();
                 }).catch((err) => {
                     console.log(err);
                 });
-
-            this._confirmPopup.querySelector(".popup__button").textContent = "Deleting..."
         }
     }
 
@@ -80,7 +76,7 @@ export default class Card {
         this._likeButton = this._element.querySelector(".card__like-button");
         this._likeButton.addEventListener("click", () => {
             if (!this._likeButton.classList.contains("info__card_like-button_state_active")) {
-                this._justClicked = true;
+                this._likeJustClicked = true;
             }
             this._checkLikes(api);
         });
@@ -106,7 +102,7 @@ export default class Card {
 
     // * * this function toggles likes for the cards
     _checkLikes(api) {
-        if (this._justClicked) {
+        if (this._likeJustClicked) {
             if (this._likes) {
                 this._likes[this._likes.length] = this._user;
             }
@@ -114,8 +110,10 @@ export default class Card {
                 .then(() => {
                     this._likeNumber.textContent = this.getLikeNumber();
                     this._likeButton.classList.add("info__card_like-button_state_active");
+                    this._justClicked = false;
+                }).catch((err) => {
+                    console.log(err);
                 });
-            this._justClicked = false;
         } else {
             api.removeLike(this._cardId)
                 .then((data) => {
